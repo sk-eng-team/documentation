@@ -34,7 +34,9 @@
           {
             "group": "API documentation",
             "pages": [
-              "api-reference/overview"
+              "hirednow-external-api/overview",
+              "hirednow-external-api/authentication",
+              "hirednow-external-api/rate-limitation"
             ]
           },
           {
