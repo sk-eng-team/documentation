@@ -13,21 +13,19 @@ description: "Retrieves a list of all active and archived recruitment campaigns 
   **Base URL**: https://api.hirednow.ai/v1
 </Warning>
 
-#### 🧭 Request
-
-**Endpoint:**
+#### Request Endpoint:
 
 ```http
 GET /campaigns?companyId={companyId}
 ```
 
-**Query Parameters:**
+#### Query Parameters:
 
 | Parameter   | Type     | Required | Description                  |
 | ----------- | -------- | -------- | ---------------------------- |
 | `companyId` | `string` | ✅        | The unique ID of the company |
 
-**Example Request:**
+#### Example Request:
 
 <Tabs>
   <Tab title="HTTP">
@@ -52,7 +50,7 @@ GET /campaigns?companyId={companyId}
   </Tab>
 </Tabs>
 
-**Example Response:**
+#### Example Response:
 
 ```json
   {
@@ -73,7 +71,7 @@ GET /campaigns?companyId={companyId}
   }
 ```
 
-**Response Codes:**
+#### Response Codes:
 
 | Code    | Description           |
 | ------- | --------------------- |
