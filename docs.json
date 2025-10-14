@@ -27,7 +27,7 @@
             "pages": [
               "api-reference/endpoint/get-campaign",
               "api-reference/endpoint/get-campaign-results",
-              "api-reference/endpoint/get-campaign-resutts-per-session"
+              "api-reference/endpoint/get-campaign-results-per-session"
             ]
           }
         ]
