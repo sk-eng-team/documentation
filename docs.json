@@ -32,43 +32,28 @@
         "tab": "Overview",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "API Documentation - Overview",
             "pages": [
-              "hirednow-external-api/overview",
-              "hirednow-external-api/authentication",
-              "hirednow-external-api/rate-limitation"
+              "overview/introduction"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "API Documentation - More Details",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "overview/authentication",
+              "overview/rate-limitation"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/overview"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
+        "tab": "API Reference",
+        "pages": [
               "api-reference/endpoint/get",
               "api-reference/endpoint/create",
               "api-reference/endpoint/delete",
               "api-reference/endpoint/webhook"
             ]
-          }
-        ]
       }
     ],
     "global": {
