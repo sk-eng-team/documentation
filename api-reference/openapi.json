@@ -39,11 +39,18 @@
             "description": "Successful response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Campaigns"
-                  }
+                "example": {
+                  "data": [
+                    {
+                      "campaignId": "c1a2b3",
+                      "name": "Marketing Intern 2025",
+                      "totalApplicants": 240,
+                      "interviewed": 75,
+                      "hired": 10,
+                      "status": "active",
+                      "updatedAt": "2025-10-10T14:25:00Z"
+                    }
+                  ]
                 }
               }
             }
@@ -52,14 +59,35 @@
             "description": "Missing companyId",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                "example": {
+                  "error": "Bad Request",
+                  "message": "Missing required query parameter 'companyId'"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or expired API key"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Server Error",
+                  "message": "Internal server error. Please try again later."
                 }
               }
             }
           }
-          "401": { "description": "Unauthorized" },
-          "500": { "description": "Server error" }
         }
       }
     },
@@ -99,10 +127,50 @@
               }
             }
           },
-          "400": { "description": "Missing campaignId" },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Campaign not found" },
-          "500": { "description": "Server error" }
+          "400": {
+            "description": "Missing campaignId",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Bad Request",
+                  "message": "Missing required query parameter 'campaignId'"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or expired API key"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Not Found",
+                  "message": "Campaign with ID 'c1a2b3' not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Server Error",
+                  "message": "Internal server error. Please try again later."
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -147,13 +215,76 @@
               }
             }
           },
-          "400": { "description": "Missing campaignId" },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Campaign or sessions not found" },
-          "500": { "description": "Server error" }
+          "400": {
+            "description": "Missing campaignId",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Bad Request",
+                  "message": "Missing required query parameter 'campaignId'"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or expired API key"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Campaign or sessions not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Not Found",
+                  "message": "No sessions found for campaign ID 'c1a2b3'"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Server Error",
+                  "message": "Internal server error. Please try again later."
+                }
+              }
+            }
+          }
         }
       }
     }
   },
-  "components": {}
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Unauthorized"
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid or expired API key"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
 }
