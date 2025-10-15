@@ -39,18 +39,8 @@
             "description": "Successful response",
             "content": {
               "application/json": {
-                "example": {
-                  "data": [
-                    {
-                      "campaignId": "c1a2b3",
-                      "name": "Marketing Intern 2025",
-                      "totalApplicants": 240,
-                      "interviewed": 75,
-                      "hired": 10,
-                      "status": "active",
-                      "updatedAt": "2025-10-10T14:25:00Z"
-                    }
-                  ]
+                "schema": { 
+                  "$ref": "#/components/schemas/CampaignList" 
                 }
               }
             }
@@ -59,9 +49,8 @@
             "description": "Missing companyId",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Bad Request",
-                  "message": "Missing required query parameter 'companyId'"
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -70,9 +59,8 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or expired API key"
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -81,9 +69,8 @@
             "description": "Server error",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Server Error",
-                  "message": "Internal server error. Please try again later."
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -111,18 +98,8 @@
             "description": "Successful response",
             "content": {
               "application/json": {
-                "example": {
-                  "data": [
-                    {
-                      "campaignId": "c1a2b3",
-                      "name": "Marketing Intern 2025",
-                      "totalApplicants": 240,
-                      "interviewed": 75,
-                      "hired": 10,
-                      "status": "active",
-                      "updatedAt": "2025-10-10T14:25:00Z"
-                    }
-                  ]
+                "schema": { 
+                  "$ref": "#/components/schemas/CampaignResultsList" 
                 }
               }
             }
@@ -131,9 +108,8 @@
             "description": "Missing campaignId",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Bad Request",
-                  "message": "Missing required query parameter 'campaignId'"
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -142,20 +118,18 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or expired API key"
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
           },
           "404": {
-            "description": "Campaign not found",
+            "description": "Campaign or sessions not found",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Not Found",
-                  "message": "Campaign with ID 'c1a2b3' not found"
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -164,9 +138,8 @@
             "description": "Server error",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Server Error",
-                  "message": "Internal server error. Please try again later."
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -194,23 +167,8 @@
             "description": "Successful response",
             "content": {
               "application/json": {
-                "example": {
-                  "data": [
-                    {
-                      "sessionId": "s101",
-                      "sessionDate": "2025-09-20",
-                      "applicants": 85,
-                      "interviewed": 25,
-                      "hired": 4
-                    },
-                    {
-                      "sessionId": "s102",
-                      "sessionDate": "2025-10-05",
-                      "applicants": 155,
-                      "interviewed": 50,
-                      "hired": 6
-                    }
-                  ]
+                "schema": { 
+                  "$ref": "#/components/schemas/SessionResultsList" 
                 }
               }
             }
@@ -219,9 +177,8 @@
             "description": "Missing campaignId",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Bad Request",
-                  "message": "Missing required query parameter 'campaignId'"
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -230,9 +187,8 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or expired API key"
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -241,9 +197,8 @@
             "description": "Campaign or sessions not found",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Not Found",
-                  "message": "No sessions found for campaign ID 'c1a2b3'"
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -252,9 +207,8 @@
             "description": "Server error",
             "content": {
               "application/json": {
-                "example": {
-                  "error": "Server Error",
-                  "message": "Internal server error. Please try again later."
+                "schema": { 
+                  "$ref": "#/components/schemas/Error" 
                 }
               }
             }
@@ -265,8 +219,146 @@
   },
   "components": {
     "schemas": {
+      "Campaign": {
+        "type": "object",
+        "required": [
+          "campaignId", 
+          "name", 
+          "status", 
+          "createdAt"
+        ],
+        "properties": {
+          "campaignId": { 
+            "type": "string", 
+            "example": "c1a2b3" 
+          },
+          "name": { 
+            "type": "string", 
+            "example": "Marketing Intern 2025" 
+          },
+          "status": { 
+            "type": "string", 
+            "example": "active" 
+          },
+          "createdAt": { 
+            "type": "string", 
+            "format": "date-time", 
+            "example": "2025-09-15T10:45:00Z" 
+          }
+        }
+      },
+      "CampaignResults": {
+        "type": "object",
+        "required": [
+          "campaignId", 
+          "name", 
+          "totalApplicants", 
+          "interviewed", 
+          "hired", 
+          "status", 
+          "updatedAt"
+        ],
+        "properties": {
+          "campaignId": { 
+            "type": "string", 
+            "example": "c1a2b3" 
+          },
+          "name": { 
+            "type": "string", 
+            "example": "Marketing Intern 2025" 
+          },
+          "totalApplicants": { 
+            "type": "integer", 
+            "example": 240 
+          },
+          "interviewed": { 
+            "type": "integer", 
+            "example": 75 
+          },
+          "hired": { 
+            "type": "integer", 
+            "example": 10 
+          },
+          "status": { 
+            "type": "string", 
+            "example": "active" 
+          },
+          "updatedAt": { 
+            "type": "string", 
+            "format": "date-time", 
+            "example": "2025-10-10T14:25:00Z" 
+          }
+        }
+      },
+      "SessionResult": {
+        "type": "object",
+        "required": [
+          "sessionId", 
+          "sessionDate", 
+          "applicants", 
+          "interviewed", 
+          "hired"
+        ],
+        "properties": {
+          "sessionId": { 
+            "type": "string", 
+            "example": "s101" 
+          },
+          "sessionDate": { 
+            "type": "string", 
+            "format": "date", 
+            "example": "2025-09-20" 
+          },
+          "applicants": { 
+            "type": "integer", 
+            "example": 85 
+          },
+          "interviewed": { 
+            "type": "integer", 
+            "example": 25 
+          },
+          "hired": { 
+            "type": "integer", 
+            "example": 4 
+          }
+        }
+      },
+      "CampaignList": {
+        "type": "object",
+        "properties": {
+          "data": { 
+            "type": "array", 
+            "items": { 
+              "$ref": "#/components/schemas/Campaign" 
+            } 
+          }
+        }
+      },
+      "CampaignResultsList": {
+        "type": "object",
+        "properties": {
+          "data": { 
+            "type": "array", 
+            "items": { 
+              "$ref": "#/components/schemas/CampaignResults" 
+            } 
+          }
+        }
+      },
+      "SessionResultsList": {
+        "type": "object",
+        "properties": {
+          "data": { 
+            "type": "array", 
+            "items": { 
+              "$ref": "#/components/schemas/SessionResult"
+            } 
+          }
+        }
+      },
       "Error": {
         "type": "object",
+        "required": ["error", "message"],
         "properties": {
           "error": {
             "type": "string",
