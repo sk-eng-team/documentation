@@ -358,15 +358,16 @@
       },
       "Error": {
         "type": "object",
-        "required": ["error", "message"],
+        "required": [
+          "error", 
+          "message"
+        ],
         "properties": {
           "error": {
             "type": "string",
-            "example": "Unauthorized"
           },
           "message": {
             "type": "string",
-            "example": "Invalid or expired API key"
           }
         }
       }
