@@ -2,12 +2,20 @@
   "openapi": "3.1.0",
   "info": {
     "title": "HiredNow External API",
-    "version": "1.0.0",
-    "description": "The HiredNow External API allows Athena developers to securely access hiring campaign and candidate evaluation data from the HiredNow platform."
+    "description": "The HiredNow External API allows Athena developers to securely access hiring campaign and candidate evaluation data from the HiredNow platform.",
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0.0"
   },
   "servers": [
     {
       "url": "https://api.hirednow.ai/v1"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
     }
   ],
   "paths": {

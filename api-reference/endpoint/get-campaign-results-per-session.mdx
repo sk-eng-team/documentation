@@ -1,5 +1,6 @@
 ---
-title: "GET Campaign Results Per Session Endpoint"
+title: "GET Campaign Results Per Session"
+openapi: "GET /campaigns/results-per-session"
 description: "Fetches detailed performance insights for each session of a campaign, including metrics such as applicants, interviews, and hires per session."
 ---
 
@@ -75,13 +76,13 @@ GET /campaigns/results-per-session?campaignId={campaignId}
 
 #### Response Codes:
 
-| Code    | Description            |
-| ------- | ---------------------- |
-| **200** | ✅ Success              |
-| **400** | ❌ Missing `campaignId` |
-| **401** | 🔒 Unauthorized        |
-| **404** | ❗ Campaign or sessions not found   |
-| **500** | ⚠️ Server error        |
+| Code    | Description                      |
+| ------- | -------------------------------- |
+| **200** | ✅ Success                        |
+| **400** | ❌ Missing `campaignId`           |
+| **401** | 🔒 Unauthorized                  |
+| **404** | ❗ Campaign or sessions not found |
+| **500** | ⚠️ Server error                  |
 
 <Note>
   Use this endpoint to monitor recruitment effectiveness over multiple campaign sessions and identify patterns in candidate engagement.
