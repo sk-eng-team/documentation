@@ -12,9 +12,11 @@
     "tabs": [
       {
         "tab": "Hirednow External API",
+        "icon": "globe",
         "groups": [
           {
             "group": "Overview",
+            "icon": "book-open",     
             "pages": [
               "index",
               "overview/introduction",
@@ -24,6 +26,7 @@
           },
           {
             "group": "API Reference",
+            "icon": "code", 
             "pages": [
               "api-reference/endpoint/get-campaign",
               "api-reference/endpoint/get-campaign-results",
