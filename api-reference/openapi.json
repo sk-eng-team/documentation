@@ -45,16 +45,6 @@
                     "$ref": "#/components/schemas/Campaigns"
                   }
                 }
-                "example": {
-                  "data": [
-                    {
-                      "campaignId": "c1a2b3",
-                      "name": "Marketing Intern 2025",
-                      "status": "active",
-                      "createdAt": "2025-09-15T10:45:00Z"
-                    }
-                  ]
-                }
               }
             }
           },
