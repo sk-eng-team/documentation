@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "HiredNow External API",
-    "description": "The HiredNow External API allows Athena developers to securely access hiring campaign and candidate evaluation data from the HiredNow platform.",
+    "title": "OpenAPI Plant Store",
+    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
     "license": {
       "name": "MIT"
     },
@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://api.hirednow.ai/v1"
+      "url": "https://u5ebyuaeej.execute-api.us-east-1.amazonaws.com/dev"
     }
   ],
   "security": [
@@ -19,38 +19,45 @@
     }
   ],
   "paths": {
-    "/campaigns": {
+    "/v1/campaigns": {
       "get": {
-        "summary": "Get Campaigns",
-        "description": "Retrieves a list of all active and archived recruitment campaigns associated with a specific company.",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "query",
-            "description": "The unique ID of the company",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "getCampaigns",
+        "summary": "Get all campaigns",
+        "description": "Returns all campaigns from the system that the user has access to",
+        "tags": ["Campaigns"],
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Campaigns response",
             "content": {
               "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/CampaignList" 
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing companyId",
-            "content": {
-              "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
+                "schema": {
+                  "type": "object",
+                  "required": ["data"],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Campaign"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "campaign_id": "b0690cc0-3ea7-4fa5-955f-9c722bbff46f",
+                      "campaign_name": "summer-sales-2024",
+                      "campaign_created_at": "2024-06-09T01:17:24.137Z",
+                      "campaign_display_name": "Summer Sales Campaign 2024"
+                    },
+                    {
+                      "campaign_id": "b2d9524d-4a30-4424-88c3-8bb993edfe81",
+                      "campaign_name": "holiday-promotion-2024",
+                      "campaign_created_at": "2024-06-09T01:17:21.088Z",
+                      "campaign_display_name": "Holiday Promotion 2024"
+                    }
+                  ]
                 }
               }
             }
@@ -59,18 +66,66 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "message": "Unauthorized",
+                    "statusCode": 401
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new plant in the store",
+        "requestBody": {
+          "description": "Plant to add to the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPlant"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "plant response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plant"
                 }
               }
             }
           },
-          "500": {
-            "description": "Server error",
+          "400": {
+            "description": "unexpected error",
             "content": {
               "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "message": "Unauthorized",
+                    "statusCode": 401
+                  }
                 }
               }
             }
@@ -78,38 +133,449 @@
         }
       }
     },
-    "/campaigns/results": {
+    "/v1/campaigns/results": {
       "get": {
-        "summary": "Get Campaign Results",
-        "description": "Retrieves summarized performance metrics and outcomes for a specific recruitment campaign, including total applicants, interviews, and hires.",
+        "operationId": "getCampaignResults",
+        "summary": "Get campaign results",
+        "description": "Returns campaign results for a specific campaign",
+        "tags": ["Campaigns"],
         "parameters": [
           {
-            "name": "campaignId",
+            "name": "campaign_id",
             "in": "query",
-            "description": "The unique ID of the campaign",
+            "description": "Unique identifier for the campaign",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of results to return",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort order for the results",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["desc", "asc"],
+              "default": "desc"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Start date for filtering results (YYYY-MM-DD format)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "End date for filtering results (YYYY-MM-DD format)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            }
+          },
+          {
+            "name": "starting_after",
+            "in": "query",
+            "description": "Pagination cursor - results after this big integer value",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "report_type",
+            "in": "query",
+            "description": "Type of report to generate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["DETAILED", "OVERALL"],
+              "default": "OVERALL"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Campaign results response",
             "content": {
               "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/CampaignResultsList" 
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing campaignId",
-            "content": {
-              "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "description": "Response for OVERALL report type",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "description": "Array of campaign result records",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Unique identifier for the result record"
+                              },
+                              "campaign_id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Unique identifier of the campaign this result belongs to"
+                              },
+                              "user_id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Unique identifier of the user who generated this result"
+                              },
+                              "email": {
+                                "type": "string",
+                                "format": "email",
+                                "description": "Email address of the user"
+                              },
+                              "recommendation": {
+                                "type": "string",
+                                "description": "Recommendation status for the user (e.g., Tentative, Approved, Rejected)"
+                              },
+                              "demonstrated_proficiency": {
+                                "type": "number",
+                                "format": "float",
+                                "description": "Numerical score representing the user's demonstrated proficiency level"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Timestamp when the result record was created"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Timestamp when the result record was last updated"
+                              },
+                              "application_no": {
+                                "type": "integer",
+                                "description": "Application number for this result"
+                              },
+                              "order_index": {
+                                "type": "string",
+                                "description": "Order index used for sorting and pagination"
+                              }
+                            }
+                          }
+                        },
+                        "hasMore": {
+                          "type": "boolean",
+                          "description": "Indicates whether there are more results available for pagination"
+                        },
+                        "last_record_index": {
+                          "type": "string",
+                          "description": "The order index of the last record in the current page, used for pagination"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "description": "Response for DETAILED report type",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "description": "Array of campaign result records with detailed score information",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Unique identifier for the result record"
+                              },
+                              "campaign_id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Unique identifier of the campaign this result belongs to"
+                              },
+                              "user_id": {
+                                "type": "string",
+                                "format": "uuid",
+                                "description": "Unique identifier of the user who generated this result"
+                              },
+                              "email": {
+                                "type": "string",
+                                "format": "email",
+                                "description": "Email address of the user"
+                              },
+                              "recommendation": {
+                                "type": "string",
+                                "description": "Recommendation status for the user (e.g., Tentative, Approved, Rejected)"
+                              },
+                              "demonstrated_proficiency": {
+                                "type": "number",
+                                "format": "float",
+                                "description": "Numerical score representing the user's demonstrated proficiency level"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Timestamp when the result record was created"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Timestamp when the result record was last updated"
+                              },
+                              "application_no": {
+                                "type": "integer",
+                                "description": "Application number for this result"
+                              },
+                              "order_index": {
+                                "type": "string",
+                                "description": "Order index used for sorting and pagination"
+                              },
+                              "score_details": {
+                                "type": "array",
+                                "description": "Detailed score breakdown for each scenario/session",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "format": "uuid",
+                                      "description": "Unique identifier for the score detail record"
+                                    },
+                                    "email": {
+                                      "type": "string",
+                                      "format": "email",
+                                      "description": "Email address of the user"
+                                    },
+                                    "scenario": {
+                                      "type": "string",
+                                      "description": "Name of the scenario that was evaluated"
+                                    },
+                                    "scenario_type": {
+                                      "type": "string",
+                                      "description": "Type of scenario (e.g., Threaded Email, Chat, Email)"
+                                    },
+                                    "session_id": {
+                                      "type": "string",
+                                      "format": "uuid",
+                                      "description": "Unique identifier for the session"
+                                    },
+                                    "score": {
+                                      "type": "number",
+                                      "format": "float",
+                                      "description": "Overall score for this scenario"
+                                    },
+                                    "eval_results": {
+                                      "type": "array",
+                                      "description": "Detailed evaluation results for each skill",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "score": {
+                                            "type": "string",
+                                            "description": "Score for this specific skill"
+                                          },
+                                          "skill": {
+                                            "type": "string",
+                                            "description": "Name of the skill being evaluated"
+                                          },
+                                          "campaign": {
+                                            "type": "string",
+                                            "description": "Campaign identifier"
+                                          },
+                                          "createdAt": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "description": "Creation timestamp identifier"
+                                          },
+                                          "eval_uuid": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "description": "Unique identifier for this evaluation"
+                                          },
+                                          "reasoning": {
+                                            "type": "string",
+                                            "description": "Detailed reasoning for the score"
+                                          },
+                                          "sentry_triggered": {
+                                            "type": "string",
+                                            "description": "Whether Sentry was triggered for this evaluation"
+                                          },
+                                          "skill count check": {
+                                            "type": "string",
+                                            "description": "Skill count validation"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "feedback": {
+                                      "type": "string",
+                                      "nullable": true,
+                                      "description": "Additional feedback for this scenario"
+                                    },
+                                    "created_at": {
+                                      "type": "string",
+                                      "description": "Timestamp when the score detail was created"
+                                    },
+                                    "updated_at": {
+                                      "type": "string",
+                                      "description": "Timestamp when the score detail was last updated"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "hasMore": {
+                          "type": "boolean",
+                          "description": "Indicates whether there are more results available for pagination"
+                        },
+                        "last_record_index": {
+                          "type": "string",
+                          "description": "The order index of the last record in the current page, used for pagination"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "OVERALL": {
+                    "summary": "OVERALL report type response",
+                    "value": {
+                      "data": [
+                        {
+                          "id": "b7048779-259e-4c64-b7bf-2fb54403e936",
+                          "campaign_id": "d339e150-efd5-4629-b83c-8b83f17fd04e",
+                          "user_id": "6684e8fe-c6f8-4967-aafe-5cfde0e19c50",
+                          "email": "userZ@gmail.com",
+                          "recommendation": "Tentative",
+                          "demonstrated_proficiency": 3.37,
+                          "created_at": "2025-05-29T00:01:42.277Z",
+                          "updated_at": "2025-04-29T00:01:42.277Z",
+                          "application_no": 1,
+                          "order_index": "29462"
+                        },
+                        {
+                          "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                          "campaign_id": "d339e150-efd5-4629-b83c-8b83f17fd04e",
+                          "user_id": "f8e7d6c5-b4a3-2910-8765-432109876543",
+                          "email": "jane.doe@example.com",
+                          "recommendation": "Approved",
+                          "demonstrated_proficiency": 4.2,
+                          "created_at": "2025-05-28T14:30:15.123Z",
+                          "updated_at": "2025-05-28T16:45:30.456Z",
+                          "application_no": 2,
+                          "order_index": "29463"
+                        }
+                      ],
+                      "hasMore": false,
+                      "last_record_index": "29463"
+                    }
+                  },
+                  "DETAILED": {
+                    "summary": "DETAILED report type response",
+                    "value": {
+                      "data": [
+                        {
+                          "id": "b7048779-259e-4c64-b7bf-2fb54403e936",
+                          "campaign_id": "d339e150-efd5-4629-b83c-8b83f17fd04e",
+                          "user_id": "6684e8fe-c6f8-4967-aafe-5cfde0e19c50",
+                          "email": "userZ@gmail.com",
+                          "recommendation": "Tentative",
+                          "demonstrated_proficiency": 3.37,
+                          "created_at": "2025-05-29T00:01:42.277Z",
+                          "updated_at": "2025-04-29T00:01:42.277Z",
+                          "application_no": 1,
+                          "order_index": "29462",
+                          "score_details": [
+                            {
+                              "id": "351c9b81-9bd8-496d-b26f-e131aa00c351",
+                              "email": "userZ@gmail.com",
+                              "scenario": "Scenario 1",
+                              "scenario_type": "Threaded Email",
+                              "session_id": "d27615a6-4749-4fe6-8968-98f69094ce9f",
+                              "score": 3.43,
+                              "eval_results": [
+                                {
+                                  "score": "3",
+                                  "skill": "Resourcefulness",
+                                  "campaign": "",
+                                  "createdAt": "f53af9b2-c15d-4a0e-a0c5-3c3696a553d4",
+                                  "eval_uuid": "53677334-9f8c-493e-b1a1-05cf88f567d0",
+                                  "reasoning": "The user adequately identifies and utilizes some resources and strategies, but lacks creativity and proactive seeking of new methods, resulting in a moderate impact on efficiency.",
+                                  "sentry_triggered": "",
+                                  "skill count check": "7"
+                                }
+                              ],
+                              "feedback": null,
+                              "created_at": "2025-04-29T05:31:42.277",
+                              "updated_at": "2025-04-29T05:31:42.277"
+                            }
+                          ]
+                        },
+                        {
+                          "id": "c8d9e0f1-2345-6789-abcd-ef0123456789",
+                          "campaign_id": "d339e150-efd5-4629-b83c-8b83f17fd04e",
+                          "user_id": "98765432-1098-7654-3210-fedcba098765",
+                          "email": "alice.smith@company.com",
+                          "recommendation": "Approved",
+                          "demonstrated_proficiency": 4.1,
+                          "created_at": "2025-05-28T10:15:30.789Z",
+                          "updated_at": "2025-05-28T12:20:45.012Z",
+                          "application_no": 3,
+                          "order_index": "29464",
+                          "score_details": [
+                            {
+                              "id": "654b55ae-d652-43b3-a405-fb11656f006b",
+                              "email": "alice.smith@company.com",
+                              "scenario": "Client Communication",
+                              "scenario_type": "Chat",
+                              "session_id": "c14cf74d-1a41-4e3c-9aba-5f0aff7318bf",
+                              "score": 4.0,
+                              "eval_results": [
+                                {
+                                  "score": "4",
+                                  "skill": "Client_Empathy",
+                                  "campaign": "",
+                                  "createdAt": "f53af9b2-c15d-4a0e-a0c5-3c3696a553d4",
+                                  "eval_uuid": "ef341cb3-27d7-4755-af9f-9055ab86090d",
+                                  "reasoning": "The user demonstrates excellent understanding of client needs and shows strong empathy in all interactions.",
+                                  "sentry_triggered": "",
+                                  "skill count check": "6"
+                                }
+                              ],
+                              "feedback": "Excellent performance in client communication scenarios.",
+                              "created_at": "2025-04-28T08:45:20.123",
+                              "updated_at": "2025-04-28T10:30:15.456"
+                            }
+                          ]
+                        }
+                      ],
+                      "hasMore": false,
+                      "last_record_index": "29464"
+                    }
+                  }
                 }
               }
             }
@@ -118,97 +584,30 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "message": "Unauthorized",
+                    "statusCode": 401
+                  }
                 }
               }
             }
           },
           "404": {
-            "description": "Campaign or sessions not found",
+            "description": "Campaign not found",
             "content": {
               "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/campaigns/results-per-session": {
-      "get": {
-        "summary": "Get Campaign Results Per Session",
-        "description": "Fetches detailed performance insights for each session of a campaign, including metrics such as applicants, interviews, and hires per session.",
-        "parameters": [
-          {
-            "name": "campaignId",
-            "in": "query",
-            "description": "The unique ID of the campaign",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/SessionResultsList" 
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing campaignId",
-            "content": {
-              "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Campaign or sessions not found",
-            "content": {
-              "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": { 
-                  "$ref": "#/components/schemas/Error" 
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "message": "Not found",
+                    "statusCode": 404
+                  }
                 }
               }
             }
@@ -220,154 +619,50 @@
   "components": {
     "schemas": {
       "Campaign": {
-        "type": "object",
         "required": [
-          "campaignId", 
-          "name", 
-          "status", 
-          "createdAt"
+          "campaign_id",
+          "campaign_name",
+          "campaign_created_at",
+          "campaign_display_name"
         ],
-        "properties": {
-          "campaignId": { 
-            "type": "string", 
-            "example": "c1a2b3" 
-          },
-          "name": { 
-            "type": "string", 
-            "example": "Marketing Intern 2025" 
-          },
-          "status": { 
-            "type": "string", 
-            "example": "active" 
-          },
-          "createdAt": { 
-            "type": "string", 
-            "format": "date-time", 
-            "example": "2025-09-15T10:45:00Z" 
-          }
-        }
-      },
-      "CampaignResults": {
-        "type": "object",
-        "required": [
-          "campaignId", 
-          "name", 
-          "totalApplicants", 
-          "interviewed", 
-          "hired", 
-          "status", 
-          "updatedAt"
-        ],
-        "properties": {
-          "campaignId": { 
-            "type": "string", 
-            "example": "c1a2b3" 
-          },
-          "name": { 
-            "type": "string", 
-            "example": "Marketing Intern 2025" 
-          },
-          "totalApplicants": { 
-            "type": "integer", 
-            "example": 240 
-          },
-          "interviewed": { 
-            "type": "integer", 
-            "example": 75 
-          },
-          "hired": { 
-            "type": "integer", 
-            "example": 10 
-          },
-          "status": { 
-            "type": "string", 
-            "example": "active" 
-          },
-          "updatedAt": { 
-            "type": "string", 
-            "format": "date-time", 
-            "example": "2025-10-10T14:25:00Z" 
-          }
-        }
-      },
-      "SessionResult": {
-        "type": "object",
-        "required": [
-          "sessionId", 
-          "sessionDate", 
-          "applicants", 
-          "interviewed", 
-          "hired"
-        ],
-        "properties": {
-          "sessionId": { 
-            "type": "string", 
-            "example": "s101" 
-          },
-          "sessionDate": { 
-            "type": "string", 
-            "format": "date", 
-            "example": "2025-09-20" 
-          },
-          "applicants": { 
-            "type": "integer", 
-            "example": 85 
-          },
-          "interviewed": { 
-            "type": "integer", 
-            "example": 25 
-          },
-          "hired": { 
-            "type": "integer", 
-            "example": 4 
-          }
-        }
-      },
-      "CampaignList": {
         "type": "object",
         "properties": {
-          "data": { 
-            "type": "array", 
-            "items": { 
-              "$ref": "#/components/schemas/Campaign" 
-            } 
-          }
-        }
-      },
-      "CampaignResultsList": {
-        "type": "object",
-        "properties": {
-          "data": { 
-            "type": "array", 
-            "items": { 
-              "$ref": "#/components/schemas/CampaignResults" 
-            } 
-          }
-        }
-      },
-      "SessionResultsList": {
-        "type": "object",
-        "properties": {
-          "data": { 
-            "type": "array", 
-            "items": { 
-              "$ref": "#/components/schemas/SessionResult"
-            } 
+          "campaign_id": {
+            "description": "Unique identifier for the campaign",
+            "type": "string",
+            "format": "uuid"
+          },
+          "campaign_name": {
+            "description": "Internal name of the campaign",
+            "type": "string"
+          },
+          "campaign_created_at": {
+            "description": "Timestamp when the campaign was created",
+            "type": "string",
+            "format": "date-time"
+          },
+          "campaign_display_name": {
+            "description": "Human-readable display name for the campaign",
+            "type": "string"
           }
         }
       },
       "Error": {
+        "required": ["error"],
         "type": "object",
-        "required": [
-          "error", 
-          "message"
-        ],
         "properties": {
           "error": {
-            "type": "string",
-          },
-          "message": {
-            "type": "string",
+            "type": "object",
+            "required": ["message", "statusCode"],
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "statusCode": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
           }
         }
       }
@@ -375,8 +670,7 @@
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "scheme": "bearer"
       }
     }
   }

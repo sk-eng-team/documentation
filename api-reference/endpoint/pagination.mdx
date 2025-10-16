@@ -1,0 +1,119 @@
+---
+title: "Pagination"
+description: "Learn how to paginate results for list and search endpoints"
+---
+
+# How pagination works
+
+## Learn how to paginate results for list and search endpoints.
+
+The API has list and search endpoints that can return multiple objects, such as listing campaigns or searching for results. To mitigate negative impacts to performance, these endpoints don't return all results at once. Instead, the API returns one page of results per API call, with each page containing up to 20 results by default. Use the `limit` parameter to change the number of results per page.
+
+For example, this is an API request to list campaigns, with a `limit` of 3:
+
+```bash
+curl -G https://api.example.com/campaigns \
+  -H "Authorization: Bearer sk_test_BQokikJOvBiI2HlWgH4olfQ2" \
+  -d limit=3
+```
+
+The response from the API contains one page with 3 results:
+
+```json
+{
+  "data": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440005",
+      "object": "campaign",
+      "name": "Summer Campaign",
+      "order_index": 100
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440004",
+      "object": "campaign",
+      "name": "Spring Campaign",
+      "order_index": 101
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440003",
+      "object": "campaign",
+      "name": "Winter Campaign",
+      "order_index": 105
+    }
+  ],
+  "has_more": true,
+  "last_record_id": 105
+}
+```
+
+Keep in mind the following details when using these endpoints:
+
+- Objects are inside the `data` property.
+- Objects are sorted by `created_at` in ascending order (oldest first) by default.
+- The `has_more` property indicates if there are additional objects that weren't returned in this request.
+
+Instead of looping over the `data` array to go through objects, you should paginate results. This prevents you from missing some objects when the `has_more` parameter is `true`.
+
+## Manual pagination
+
+Follow these steps to manually paginate results. This process is different when calling a list endpoint or a search endpoint.
+
+### List endpoints
+
+1. Make an API call to list the objects that you want to find.
+
+```bash
+curl https://api.example.com/campaigns \
+  -H "Authorization: Bearer sk_test_BQokikJOvBiI2HlWgH4olfQ2"
+```
+
+2. In the response, check the value of `has_more`:
+   - If the value is `false`, you've retrieved all the objects.
+   - If the value is `true`, get the ID from `last_record_id`, and make a new API call with the `starting_after` parameter set to that ID.
+
+Repeat this step until you've retrieved all of the objects that you want to find.
+
+```bash
+curl -G https://api.example.com/campaigns \
+  -H "Authorization: Bearer sk_test_BQokikJOvBiI2HlWgH4olfQ2" \
+  -d starting_after=105
+```
+
+## Parameters
+
+<ParamField query="limit" type="integer" default="10">
+  A limit on the number of objects to be returned. Limit can range between 1 and
+  100, and the default is 20.
+</ParamField>
+
+<ParamField query="starting_after" type="string">
+  A cursor for use in pagination. `starting_after` is an object ID that defines
+  your place in the list. For instance, if you make a list request and receive
+  10 objects, ending with ID `105`, your subsequent call can include
+  `starting_after=105` in order to fetch the next page of the list.
+</ParamField>
+
+## Response format
+
+All paginated endpoints return responses in the following format:
+
+```json
+{
+  "data": [...],
+  "has_more": true,
+  "last_record_id": 105
+}
+```
+
+<ResponseField name="data" type="array">
+  Array of objects for the current page
+</ResponseField>
+
+<ResponseField name="has_more" type="boolean">
+  Whether there are more objects available after this page
+</ResponseField>
+
+<ResponseField name="last_record_id" type="string">
+  ID of the last record in the current page. Use this as the `starting_after`
+  parameter for the next page. `null` if there are no more pages.
+</ResponseField>

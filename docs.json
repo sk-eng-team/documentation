@@ -1,59 +1,42 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Hirednow External API",
+  "name": "Mint Starter Kit",
   "colors": {
-    "primary": "#16A34A",
+    "primary": "#033156",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.ico",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Hirednow External API",
-        "icon": "globe",
-        "groups": [
-          {
-            "group": "Overview",
-            "icon": "book-open",     
-            "pages": [
-              "index",
-              "overview/introduction",
-              "overview/authentication",
-              "overview/rate-limitation"
-            ]
-          },
-          {
-            "group": "API Reference",
-            "icon": "code", 
-            "pages": [
-              "api-reference/endpoint/get-campaign",
-              "api-reference/endpoint/get-campaign-results",
-              "api-reference/endpoint/get-campaign-results-per-session"
-            ]
-          }
+        "group": "Overview",
+        "icon": "book",
+        "pages": ["overview/introduction", "api-reference/endpoint/pagination"]
+      },
+      {
+        "group": "Endpoints",
+        "icon": "code",
+        "pages": [
+          "api-reference/endpoint/list",
+          "api-reference/endpoint/campaigns-results"
         ]
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "Mintlify - Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Mintlify - Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Support",
+          "href": "mailto:hi@mintlify.com",
+          "icon": "headset"
         }
       ]
     }
   },
   "logo": {
-    "light": "logo/light.webp",
-    "dark": "logo/dark.avif"
+    "light": "/logo/light.webp",
+    "dark": "/logo/dark.avif"
   },
   "navbar": {
     "links": [
@@ -61,12 +44,7 @@
         "label": "Support",
         "href": "mailto:hi@mintlify.com"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
+    ]
   },
   "contextual": {
     "options": [
