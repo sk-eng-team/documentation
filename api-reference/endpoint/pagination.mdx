@@ -13,7 +13,7 @@ For example, this is an API request to list campaigns, with a `limit` of 3:
 
 ```bash
 curl -G https://api.example.com/campaigns \
-  -H "Authorization: Bearer sk_test_BQokikJOvBiI2HlWgH4olfQ2" \
+  -H "Authorization: Bearer sk_test_key" \
   -d limit=3
 ```
 
@@ -64,7 +64,7 @@ Follow these steps to manually paginate results. This process is different when 
 
 ```bash
 curl https://api.example.com/campaigns \
-  -H "Authorization: Bearer sk_test_BQokikJOvBiI2HlWgH4olfQ2"
+  -H "Authorization: Bearer sk_test_key"
 ```
 
 2. In the response, check the value of `has_more`:
@@ -75,7 +75,7 @@ Repeat this step until you've retrieved all of the objects that you want to find
 
 ```bash
 curl -G https://api.example.com/campaigns \
-  -H "Authorization: Bearer sk_test_BQokikJOvBiI2HlWgH4olfQ2" \
+  -H "Authorization: Bearer sk_test_key" \
   -d starting_after=105
 ```
 
