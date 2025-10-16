@@ -39,6 +39,11 @@
       ]
     }
   },
+  "api": {
+    "playground": {
+      "proxy": false
+    }
+  },
   "logo": {
     "light": "/logo/light.webp",
     "dark": "/logo/dark.avif"
