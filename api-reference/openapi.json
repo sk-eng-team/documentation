@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://u5ebyuaeej.execute-api.us-east-1.amazonaws.com/dev"
+      "url": "https://api.external.hirednow.ai"
     }
   ],
   "security": [
