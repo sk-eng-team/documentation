@@ -46,16 +46,18 @@
                 "example": {
                   "data": [
                     {
-                      "campaign_id": "b0690cc0-3ea7-4fa5-955f-9c722bbff46f",
+                      "campaign_id": "3f7a9c2e-5d8b-4e1a-9c6f-8b2d4e7a1c9f",
                       "campaign_name": "summer-sales-2024",
                       "campaign_created_at": "2024-06-09T01:17:24.137Z",
-                      "campaign_display_name": "Summer Sales Campaign 2024"
+                      "campaign_display_name": "Summer Sales Campaign 2024",
+                      "campaign_type": "SESSION_COMPLETION"
                     },
                     {
-                      "campaign_id": "b2d9524d-4a30-4424-88c3-8bb993edfe81",
+                      "campaign_id": "8e4b1f7c-3a9d-4c2e-8f5b-1d7a9c4e6b8f",
                       "campaign_name": "holiday-promotion-2024",
                       "campaign_created_at": "2024-06-09T01:17:21.088Z",
-                      "campaign_display_name": "Holiday Promotion 2024"
+                      "campaign_display_name": "Holiday Promotion 2024",
+                      "campaign_type": "ROLE_SUBMISSION"
                     }
                   ]
                 }
@@ -79,38 +81,207 @@
             }
           }
         }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
+      }
+    },
+    "/v1/campaigns/session/results": {
+      "get": {
+        "operationId": "listSessionEvaluationResults",
+        "summary": "List session evaluation results",
+        "description": "Returns session evaluation results for a specific campaign with detailed scoring and evaluations",
+        "tags": ["Campaigns"],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "query",
+            "description": "Unique identifier for the campaign",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
-          },
-          "required": true
-        },
+          }
+        ],
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "Session evaluation results response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Unique identifier for the evaluation result"
+                      },
+                      "campaign_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Unique identifier of the campaign"
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email address of the user"
+                      },
+                      "user_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Unique identifier of the user"
+                      },
+                      "session_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Unique identifier for the session"
+                      },
+                      "score": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Overall score for the session"
+                      },
+                      "scenario": {
+                        "type": "string",
+                        "description": "Name of the scenario that was evaluated"
+                      },
+                      "scenario_type": {
+                        "type": "string",
+                        "description": "Type of scenario (e.g., Email, Chat, Threaded Email)"
+                      },
+                      "eval_results": {
+                        "type": "array",
+                        "description": "Detailed evaluation results for each skill assessed",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "score": {
+                              "type": "string",
+                              "description": "Score for this specific skill"
+                            },
+                            "skill": {
+                              "type": "string",
+                              "description": "Name of the skill being evaluated"
+                            },
+                            "campaign": {
+                              "type": "string",
+                              "description": "Campaign identifier"
+                            },
+                            "created_at": {
+                              "type": "string",
+                              "format": "uuid",
+                              "description": "Creation timestamp identifier"
+                            },
+                            "eval_uuid": {
+                              "type": "string",
+                              "format": "uuid",
+                              "description": "Unique identifier for this evaluation"
+                            },
+                            "reasoning": {
+                              "type": "string",
+                              "description": "Detailed reasoning for the score"
+                            },
+                            "sentry_triggered": {
+                              "type": "string",
+                              "description": "Whether Sentry was triggered for this evaluation"
+                            },
+                            "skill_count_check": {
+                              "type": "string",
+                              "description": "Skill count validation"
+                            }
+                          }
+                        }
+                      },
+                      "feedback": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Additional feedback for this session"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the result was created"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Timestamp when the result was last updated"
+                      },
+                      "order_index": {
+                        "type": "string",
+                        "description": "Order index used for sorting"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "f04352f1-2452-4cb7-8bad-56d6a089d56a",
+                    "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                    "email": "userR@gmail.com",
+                    "user_id": "7a3f8e12-9b4d-4c7a-8f1e-2d6b5c8a9e3f",
+                    "session_id": "8395386-a15f-44cd-acca-84d51cef5aaf",
+                    "score": 3.2,
+                    "scenario": "Inbox Triage",
+                    "scenario_type": "Email",
+                    "eval_results": [
+                      {
+                        "score": "3",
+                        "skill": "Judgment",
+                        "campaign": "",
+                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
+                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "reasoning": "The candidate makes reasonable decisions in straightforward situations but struggles with uncertainty, as seen in the inappropriate response to the CEO's complaint and ignoring the vague project email.",
+                        "sentry_triggered": "",
+                        "skill_count_check": "5"
+                      },
+                      {
+                        "score": "3",
+                        "skill": "Attention_to_Detail",
+                        "campaign": "",
+                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
+                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "reasoning": "The candidate demonstrates acceptable accuracy but misses some details, such as responding as Alex inappropriately and ignoring a request for guidance, indicating a need for occasional corrections.",
+                        "sentry_triggered": "",
+                        "skill_count_check": "5"
+                      },
+                      {
+                        "score": "4",
+                        "skill": "Prioritization",
+                        "campaign": "",
+                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
+                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "reasoning": "The candidate effectively prioritizes high-impact tasks, such as urgent investor presentation changes and confidential merger details, while also addressing routine matters, demonstrating proficient prioritization skills.",
+                        "sentry_triggered": "",
+                        "skill_count_check": "5"
+                      },
+                      {
+                        "score": "3",
+                        "skill": "Written_Communication",
+                        "campaign": "",
+                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
+                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "reasoning": "The candidate communicates with occasional errors and lapses in clarity, such as in the reasoning for Email Response Pair #1 and #5, but generally conveys the intended message. The responses show some tailoring to the audience, but there are instances of misjudgment, such as replying as the client in Email Response Pair #3, which affects professionalism.",
+                        "sentry_triggered": "",
+                        "skill_count_check": "5"
+                      },
+                      {
+                        "score": "3",
+                        "skill": "CriticalThinking",
+                        "campaign": "",
+                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
+                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "reasoning": "The user demonstrates basic logical reasoning skills and attempts to evaluate information, but their responses often lack depth and consideration of multiple perspectives, such as ignoring the Project Phoenix email.",
+                        "sentry_triggered": "",
+                        "skill_count_check": "5"
+                      }
+                    ],
+                    "feedback": null,
+                    "created_at": "2025-04-29T00:01:42.277Z",
+                    "updated_at": "2025-04-29T00:01:42.277Z",
+                    "order_index": "4"
+                  }
+                ]
               }
             }
           },
@@ -129,15 +300,31 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Campaign not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "message": "Not found",
+                    "statusCode": 404
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/v1/campaigns/results": {
+    "/v1/campaigns/role/results": {
       "get": {
         "operationId": "getCampaignResults",
         "summary": "Get campaign results",
-        "description": "Returns campaign results for a specific campaign",
+        "description": "Returns role evaluation results for a specific campaign",
         "tags": ["Campaigns"],
         "parameters": [
           {
@@ -284,7 +471,7 @@
                             }
                           }
                         },
-                        "hasMore": {
+                        "has_more": {
                           "type": "boolean",
                           "description": "Indicates whether there are more results available for pagination"
                         },
@@ -403,7 +590,7 @@
                                             "type": "string",
                                             "description": "Campaign identifier"
                                           },
-                                          "createdAt": {
+                                          "created_at": {
                                             "type": "string",
                                             "format": "uuid",
                                             "description": "Creation timestamp identifier"
@@ -421,7 +608,7 @@
                                             "type": "string",
                                             "description": "Whether Sentry was triggered for this evaluation"
                                           },
-                                          "skill count check": {
+                                          "skill_count_check": {
                                             "type": "string",
                                             "description": "Skill count validation"
                                           }
@@ -447,7 +634,7 @@
                             }
                           }
                         },
-                        "hasMore": {
+                        "has_more": {
                           "type": "boolean",
                           "description": "Indicates whether there are more results available for pagination"
                         },
@@ -466,8 +653,8 @@
                       "data": [
                         {
                           "id": "b7048779-259e-4c64-b7bf-2fb54403e936",
-                          "campaign_id": "d339e150-efd5-4629-b83c-8b83f17fd04e",
-                          "user_id": "6684e8fe-c6f8-4967-aafe-5cfde0e19c50",
+                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                          "user_id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
                           "email": "userZ@gmail.com",
                           "recommendation": "Tentative",
                           "demonstrated_proficiency": 3.37,
@@ -478,8 +665,8 @@
                         },
                         {
                           "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                          "campaign_id": "d339e150-efd5-4629-b83c-8b83f17fd04e",
-                          "user_id": "f8e7d6c5-b4a3-2910-8765-432109876543",
+                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                          "user_id": "9e5a2c8f-4b1d-4e7a-8c3f-1b6d9a5e2c8f",
                           "email": "jane.doe@example.com",
                           "recommendation": "Approved",
                           "demonstrated_proficiency": 4.2,
@@ -489,7 +676,7 @@
                           "order_index": "29463"
                         }
                       ],
-                      "hasMore": false,
+                      "has_more": false,
                       "last_record_index": "29463"
                     }
                   },
@@ -499,8 +686,8 @@
                       "data": [
                         {
                           "id": "b7048779-259e-4c64-b7bf-2fb54403e936",
-                          "campaign_id": "d339e150-efd5-4629-b83c-8b83f17fd04e",
-                          "user_id": "6684e8fe-c6f8-4967-aafe-5cfde0e19c50",
+                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                          "user_id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
                           "email": "userZ@gmail.com",
                           "recommendation": "Tentative",
                           "demonstrated_proficiency": 3.37,
@@ -521,11 +708,11 @@
                                   "score": "3",
                                   "skill": "Resourcefulness",
                                   "campaign": "",
-                                  "createdAt": "f53af9b2-c15d-4a0e-a0c5-3c3696a553d4",
+                                  "created_at": "f53af9b2-c15d-4a0e-a0c5-3c3696a553d4",
                                   "eval_uuid": "53677334-9f8c-493e-b1a1-05cf88f567d0",
                                   "reasoning": "The user adequately identifies and utilizes some resources and strategies, but lacks creativity and proactive seeking of new methods, resulting in a moderate impact on efficiency.",
                                   "sentry_triggered": "",
-                                  "skill count check": "7"
+                                  "skill_count_check": "7"
                                 }
                               ],
                               "feedback": null,
@@ -536,8 +723,8 @@
                         },
                         {
                           "id": "c8d9e0f1-2345-6789-abcd-ef0123456789",
-                          "campaign_id": "d339e150-efd5-4629-b83c-8b83f17fd04e",
-                          "user_id": "98765432-1098-7654-3210-fedcba098765",
+                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                          "user_id": "4b8d1e7a-9c5f-4a2d-8e6b-3f1c9d7a5e2b",
                           "email": "alice.smith@company.com",
                           "recommendation": "Approved",
                           "demonstrated_proficiency": 4.1,
@@ -558,11 +745,11 @@
                                   "score": "4",
                                   "skill": "Client_Empathy",
                                   "campaign": "",
-                                  "createdAt": "f53af9b2-c15d-4a0e-a0c5-3c3696a553d4",
+                                  "created_at": "f53af9b2-c15d-4a0e-a0c5-3c3696a553d4",
                                   "eval_uuid": "ef341cb3-27d7-4755-af9f-9055ab86090d",
                                   "reasoning": "The user demonstrates excellent understanding of client needs and shows strong empathy in all interactions.",
                                   "sentry_triggered": "",
-                                  "skill count check": "6"
+                                  "skill_count_check": "6"
                                 }
                               ],
                               "feedback": "Excellent performance in client communication scenarios.",
@@ -572,7 +759,7 @@
                           ]
                         }
                       ],
-                      "hasMore": false,
+                      "has_more": false,
                       "last_record_index": "29464"
                     }
                   }
@@ -623,7 +810,8 @@
           "campaign_id",
           "campaign_name",
           "campaign_created_at",
-          "campaign_display_name"
+          "campaign_display_name",
+          "campaign_type"
         ],
         "type": "object",
         "properties": {
@@ -644,6 +832,11 @@
           "campaign_display_name": {
             "description": "Human-readable display name for the campaign",
             "type": "string"
+          },
+          "campaign_type": {
+            "description": "Type of campaign",
+            "type": "string",
+            "enum": ["SESSION_COMPLETION", "ROLE_SUBMISSION"]
           }
         }
       },

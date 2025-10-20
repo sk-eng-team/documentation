@@ -23,7 +23,8 @@
             "group": "Campaigns",
             "pages": [
               "api-reference/endpoint/list",
-              "api-reference/endpoint/campaigns-results"
+              "api-reference/endpoint/campaigns-results",
+              "api-reference/endpoint/session-results"
             ]
           }
         ]
