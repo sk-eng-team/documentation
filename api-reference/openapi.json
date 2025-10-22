@@ -146,8 +146,18 @@
                         "description": "Name of the scenario that was evaluated"
                       },
                       "scenario_type": {
-                        "type": "string",
-                        "description": "Type of scenario (e.g., Email, Chat, Threaded Email)"
+                        "type": "object",
+                        "description": "Type of scenario with key and label",
+                        "properties": {
+                          "key": {
+                            "type": "string",
+                            "description": "Scenario type key (e.g., EMAIL, CHAT, THREADED_EMAIL)"
+                          },
+                          "label": {
+                            "type": "string",
+                            "description": "Human-readable scenario type label (e.g., Email, Chat, Threaded Email)"
+                          }
+                        }
                       },
                       "eval_results": {
                         "type": "array",
@@ -223,7 +233,10 @@
                     "session_id": "8395386-a15f-44cd-acca-84d51cef5aaf",
                     "score": 3.2,
                     "scenario": "Inbox Triage",
-                    "scenario_type": "Email",
+                    "scenario_type": {
+                      "key": "EMAIL",
+                      "label": "Email"
+                    },
                     "eval_results": [
                       {
                         "score": "3",
@@ -559,8 +572,18 @@
                                       "description": "Name of the scenario that was evaluated"
                                     },
                                     "scenario_type": {
-                                      "type": "string",
-                                      "description": "Type of scenario (e.g., Threaded Email, Chat, Email)"
+                                      "type": "object",
+                                      "description": "Type of scenario with key and label",
+                                      "properties": {
+                                        "key": {
+                                          "type": "string",
+                                          "description": "Scenario type key (e.g., EMAIL, CHAT, THREADED_EMAIL)"
+                                        },
+                                        "label": {
+                                          "type": "string",
+                                          "description": "Human-readable scenario type label (e.g., Email, Chat, Threaded Email)"
+                                        }
+                                      }
                                     },
                                     "session_id": {
                                       "type": "string",
@@ -700,7 +723,10 @@
                               "id": "351c9b81-9bd8-496d-b26f-e131aa00c351",
                               "email": "userZ@gmail.com",
                               "scenario": "Scenario 1",
-                              "scenario_type": "Threaded Email",
+                              "scenario_type": {
+                                "key": "THREADED_EMAIL",
+                                "label": "Threaded Email"
+                              },
                               "session_id": "d27615a6-4749-4fe6-8968-98f69094ce9f",
                               "score": 3.43,
                               "eval_results": [
@@ -737,7 +763,10 @@
                               "id": "654b55ae-d652-43b3-a405-fb11656f006b",
                               "email": "alice.smith@company.com",
                               "scenario": "Client Communication",
-                              "scenario_type": "Chat",
+                              "scenario_type": {
+                                "key": "CHAT",
+                                "label": "Chat"
+                              },
                               "session_id": "c14cf74d-1a41-4e3c-9aba-5f0aff7318bf",
                               "score": 4.0,
                               "eval_results": [
