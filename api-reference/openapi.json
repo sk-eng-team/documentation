@@ -136,12 +136,12 @@
                         "format": "uuid",
                         "description": "Unique identifier for the session"
                       },
-                      "score": {
+                      "scenario_score": {
                         "type": "number",
                         "format": "float",
-                        "description": "Overall score for the session"
+                        "description": "Overall score for the scenario"
                       },
-                      "scenario": {
+                      "scenario_name": {
                         "type": "string",
                         "description": "Name of the scenario that was evaluated"
                       },
@@ -170,42 +170,76 @@
                               "description": "Score for this specific skill"
                             },
                             "skill": {
-                              "type": "string",
-                              "description": "Name of the skill being evaluated"
+                              "type": "object",
+                              "description": "Skill being evaluated with key and label",
+                              "properties": {
+                                "key": {
+                                  "type": "string",
+                                  "description": "Skill key (e.g., JUDGMENT, ATTENTION_TO_DETAIL, PRIORITIZATION)"
+                                },
+                                "label": {
+                                  "type": "string",
+                                  "description": "Human-readable skill label (e.g., Judgment, Attention to Detail, Prioritization)"
+                                }
+                              }
                             },
-                            "campaign": {
+                            "rationale": {
                               "type": "string",
-                              "description": "Campaign identifier"
+                              "description": "Detailed rationale for the score"
                             },
-                            "created_at": {
+                            "evaluated_at": {
                               "type": "string",
-                              "format": "uuid",
-                              "description": "Creation timestamp identifier"
+                              "format": "date-time",
+                              "description": "Timestamp when the evaluation was performed"
                             },
-                            "eval_uuid": {
+                            "evaluation_id": {
                               "type": "string",
                               "format": "uuid",
                               "description": "Unique identifier for this evaluation"
-                            },
-                            "reasoning": {
-                              "type": "string",
-                              "description": "Detailed reasoning for the score"
-                            },
-                            "sentry_triggered": {
-                              "type": "string",
-                              "description": "Whether Sentry was triggered for this evaluation"
-                            },
-                            "skill_count_check": {
-                              "type": "string",
-                              "description": "Skill count validation"
                             }
                           }
                         }
                       },
                       "feedback": {
-                        "type": "string",
+                        "type": "object",
                         "nullable": true,
-                        "description": "Additional feedback for this session"
+                        "description": "Structured feedback for this session",
+                        "properties": {
+                          "key_strengths": {
+                            "type": "array",
+                            "description": "List of key strengths identified",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string",
+                                  "description": "Title of the strength"
+                                },
+                                "strength": {
+                                  "type": "string",
+                                  "description": "Detailed description of the strength"
+                                }
+                              }
+                            }
+                          },
+                          "areas_for_growths": {
+                            "type": "array",
+                            "description": "List of areas for improvement",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string",
+                                  "description": "Title of the improvement area"
+                                },
+                                "improvement_area": {
+                                  "type": "string",
+                                  "description": "Detailed description of the improvement area"
+                                }
+                              }
+                            }
+                          }
+                        }
                       },
                       "created_at": {
                         "type": "string",
@@ -231,8 +265,8 @@
                     "email": "userR@gmail.com",
                     "user_id": "7a3f8e12-9b4d-4c7a-8f1e-2d6b5c8a9e3f",
                     "session_id": "8395386-a15f-44cd-acca-84d51cef5aaf",
-                    "score": 3.2,
-                    "scenario": "Inbox Triage",
+                    "scenario_score": 3.2,
+                    "scenario_name": "Inbox Triage",
                     "scenario_type": {
                       "key": "EMAIL",
                       "label": "Email"
@@ -240,56 +274,80 @@
                     "eval_results": [
                       {
                         "score": "3",
-                        "skill": "Judgment",
-                        "campaign": "",
-                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
-                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
-                        "reasoning": "The candidate makes reasonable decisions in straightforward situations but struggles with uncertainty, as seen in the inappropriate response to the CEO's complaint and ignoring the vague project email.",
-                        "sentry_triggered": "",
-                        "skill_count_check": "5"
+                        "skill": {
+                          "key": "JUDGMENT",
+                          "label": "Judgment"
+                        },
+                        "rationale": "The candidate makes reasonable decisions in straightforward situations but struggles with uncertainty, as seen in the inappropriate response to the CEO's complaint and ignoring the vague project email.",
+                        "evaluated_at": "2025-04-29T00:01:42.277Z"
                       },
                       {
                         "score": "3",
-                        "skill": "Attention_to_Detail",
-                        "campaign": "",
-                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
-                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
-                        "reasoning": "The candidate demonstrates acceptable accuracy but misses some details, such as responding as Alex inappropriately and ignoring a request for guidance, indicating a need for occasional corrections.",
-                        "sentry_triggered": "",
-                        "skill_count_check": "5"
+                        "skill": {
+                          "key": "ATTENTION_TO_DETAIL",
+                          "label": "Attention to Detail"
+                        },
+                        "evaluated_at": "2025-04-29T00:01:42.277Z",
+                        "evaluation_id": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "rationale": "The candidate demonstrates acceptable accuracy but misses some details, such as responding as Alex inappropriately and ignoring a request for guidance, indicating a need for occasional corrections."
                       },
                       {
                         "score": "4",
-                        "skill": "Prioritization",
-                        "campaign": "",
-                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
-                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
-                        "reasoning": "The candidate effectively prioritizes high-impact tasks, such as urgent investor presentation changes and confidential merger details, while also addressing routine matters, demonstrating proficient prioritization skills.",
-                        "sentry_triggered": "",
-                        "skill_count_check": "5"
+                        "skill": {
+                          "key": "PRIORITIZATION",
+                          "label": "Prioritization"
+                        },
+                        "evaluated_at": "2025-04-29T00:01:42.277Z",
+                        "evaluation_id": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "rationale": "The candidate effectively prioritizes high-impact tasks, such as urgent investor presentation changes and confidential merger details, while also addressing routine matters, demonstrating proficient prioritization skills."
                       },
                       {
                         "score": "3",
-                        "skill": "Written_Communication",
-                        "campaign": "",
-                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
-                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
-                        "reasoning": "The candidate communicates with occasional errors and lapses in clarity, such as in the reasoning for Email Response Pair #1 and #5, but generally conveys the intended message. The responses show some tailoring to the audience, but there are instances of misjudgment, such as replying as the client in Email Response Pair #3, which affects professionalism.",
-                        "sentry_triggered": "",
-                        "skill_count_check": "5"
+                        "skill": {
+                          "key": "WRITTEN_COMMUNICATION",
+                          "label": "Written Communication"
+                        },
+                        "evaluated_at": "2025-04-29T00:01:42.277Z",
+                        "evaluation_id": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "rationale": "The candidate communicates with occasional errors and lapses in clarity, such as in the reasoning for Email Response Pair #1 and #5, but generally conveys the intended message. The responses show some tailoring to the audience, but there are instances of misjudgment, such as replying as the client in Email Response Pair #3, which affects professionalism."
                       },
                       {
                         "score": "3",
-                        "skill": "CriticalThinking",
-                        "campaign": "",
-                        "created_at": "dea502cb-ab8c-45f1-b924-cb0398593f30",
-                        "eval_uuid": "c204d8dd-8550-4c39-bf2c-23c11c090932",
-                        "reasoning": "The user demonstrates basic logical reasoning skills and attempts to evaluate information, but their responses often lack depth and consideration of multiple perspectives, such as ignoring the Project Phoenix email.",
-                        "sentry_triggered": "",
-                        "skill_count_check": "5"
+                        "skill": {
+                          "key": "CRITICAL_THINKING",
+                          "label": "Critical Thinking"
+                        },
+                        "evaluated_at": "2025-04-29T00:01:42.277Z",
+                        "evaluation_id": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "rationale": "The user demonstrates basic logical reasoning skills and attempts to evaluate information, but their responses often lack depth and consideration of multiple perspectives, such as ignoring the Project Phoenix email."
                       }
                     ],
-                    "feedback": null,
+                    "feedback": {
+                      "key_strengths": [
+                        {
+                          "title": "Communication Attempt",
+                          "strength": "You made an attempt to communicate, which is a foundational step in engaging with tasks. Building on this can help improve clarity and effectiveness in future interactions."
+                        },
+                        {
+                          "title": "Willingness to Engage",
+                          "strength": "Your initial response indicates a willingness to participate. Harnessing this willingness with more structured and relevant content can enhance your contributions."
+                        }
+                      ],
+                      "areas_for_growths": [
+                        {
+                          "title": "Enhancing AI Knowledge",
+                          "improvement_area": "Focus on engaging with AI-related content and discussions to build your knowledge and demonstrate understanding of AI capabilities and solutions."
+                        },
+                        {
+                          "title": "Improving Communication Clarity",
+                          "improvement_area": "Work on structuring your responses with clear, logical flow to ensure your communication is coherent and accessible to your audience."
+                        },
+                        {
+                          "title": "Developing Problem-Solving Skills",
+                          "improvement_area": "Engage more deeply with tasks to identify and address workflow challenges, showcasing your ability to solve problems effectively."
+                        }
+                      ]
+                    },
                     "created_at": "2025-04-29T00:01:42.277Z",
                     "updated_at": "2025-04-29T00:01:42.277Z",
                     "order_index": "4"
@@ -458,10 +516,19 @@
                                 "type": "string",
                                 "description": "Recommendation status for the user (e.g., Tentative, Approved, Rejected)"
                               },
-                              "demonstrated_proficiency": {
+                              "overall_score": {
                                 "type": "number",
                                 "format": "float",
-                                "description": "Numerical score representing the user's demonstrated proficiency level"
+                                "description": "Overall score representing the user's demonstrated proficiency level"
+                              },
+                              "scenario_score": {
+                                "type": "number",
+                                "format": "float",
+                                "description": "Score for the specific scenario (optional)"
+                              },
+                              "scenario_name": {
+                                "type": "string",
+                                "description": "Name of the scenario (optional)"
                               },
                               "created_at": {
                                 "type": "string",
@@ -472,10 +539,6 @@
                                 "type": "string",
                                 "format": "date-time",
                                 "description": "Timestamp when the result record was last updated"
-                              },
-                              "application_no": {
-                                "type": "integer",
-                                "description": "Application number for this result"
                               },
                               "order_index": {
                                 "type": "string",
@@ -528,10 +591,10 @@
                                 "type": "string",
                                 "description": "Recommendation status for the user (e.g., Tentative, Approved, Rejected)"
                               },
-                              "demonstrated_proficiency": {
+                              "overall_score": {
                                 "type": "number",
                                 "format": "float",
-                                "description": "Numerical score representing the user's demonstrated proficiency level"
+                                "description": "Overall score representing the user's demonstrated proficiency level"
                               },
                               "created_at": {
                                 "type": "string",
@@ -567,7 +630,7 @@
                                       "format": "email",
                                       "description": "Email address of the user"
                                     },
-                                    "scenario": {
+                                    "scenario_name": {
                                       "type": "string",
                                       "description": "Name of the scenario that was evaluated"
                                     },
@@ -606,34 +669,32 @@
                                             "description": "Score for this specific skill"
                                           },
                                           "skill": {
-                                            "type": "string",
-                                            "description": "Name of the skill being evaluated"
+                                            "type": "object",
+                                            "description": "Skill being evaluated with key and label",
+                                            "properties": {
+                                              "key": {
+                                                "type": "string",
+                                                "description": "Skill key (e.g., RESOURCEFULNESS, CLIENT_EMPATHY)"
+                                              },
+                                              "label": {
+                                                "type": "string",
+                                                "description": "Human-readable skill label (e.g., Resourcefulness, Client Empathy)"
+                                              }
+                                            }
                                           },
-                                          "campaign": {
+                                          "rationale": {
                                             "type": "string",
-                                            "description": "Campaign identifier"
+                                            "description": "Detailed rationale for the score"
                                           },
-                                          "created_at": {
+                                          "evaluated_at": {
                                             "type": "string",
-                                            "format": "uuid",
-                                            "description": "Creation timestamp identifier"
+                                            "format": "date-time",
+                                            "description": "Timestamp when the evaluation was performed"
                                           },
-                                          "eval_uuid": {
+                                          "evaluation_id": {
                                             "type": "string",
                                             "format": "uuid",
                                             "description": "Unique identifier for this evaluation"
-                                          },
-                                          "reasoning": {
-                                            "type": "string",
-                                            "description": "Detailed reasoning for the score"
-                                          },
-                                          "sentry_triggered": {
-                                            "type": "string",
-                                            "description": "Whether Sentry was triggered for this evaluation"
-                                          },
-                                          "skill_count_check": {
-                                            "type": "string",
-                                            "description": "Skill count validation"
                                           }
                                         }
                                       }
@@ -680,10 +741,11 @@
                           "user_id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
                           "email": "userZ@gmail.com",
                           "recommendation": "Tentative",
-                          "demonstrated_proficiency": 3.37,
+                          "overall_score": 3.37,
+                          "scenario_score": 3.2,
+                          "scenario_name": "Inbox Triage",
                           "created_at": "2025-05-29T00:01:42.277Z",
                           "updated_at": "2025-04-29T00:01:42.277Z",
-                          "application_no": 1,
                           "order_index": "29462"
                         },
                         {
@@ -692,10 +754,9 @@
                           "user_id": "9e5a2c8f-4b1d-4e7a-8c3f-1b6d9a5e2c8f",
                           "email": "jane.doe@example.com",
                           "recommendation": "Approved",
-                          "demonstrated_proficiency": 4.2,
+                          "overall_score": 4.2,
                           "created_at": "2025-05-28T14:30:15.123Z",
                           "updated_at": "2025-05-28T16:45:30.456Z",
-                          "application_no": 2,
                           "order_index": "29463"
                         }
                       ],
@@ -713,7 +774,7 @@
                           "user_id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
                           "email": "userZ@gmail.com",
                           "recommendation": "Tentative",
-                          "demonstrated_proficiency": 3.37,
+                          "overall_score": 3.37,
                           "created_at": "2025-05-29T00:01:42.277Z",
                           "updated_at": "2025-04-29T00:01:42.277Z",
                           "application_no": 1,
@@ -722,7 +783,7 @@
                             {
                               "id": "351c9b81-9bd8-496d-b26f-e131aa00c351",
                               "email": "userZ@gmail.com",
-                              "scenario": "Scenario 1",
+                              "scenario_name": "Scenario 1",
                               "scenario_type": {
                                 "key": "THREADED_EMAIL",
                                 "label": "Threaded Email"
@@ -732,13 +793,13 @@
                               "eval_results": [
                                 {
                                   "score": "3",
-                                  "skill": "Resourcefulness",
-                                  "campaign": "",
-                                  "created_at": "f53af9b2-c15d-4a0e-a0c5-3c3696a553d4",
-                                  "eval_uuid": "53677334-9f8c-493e-b1a1-05cf88f567d0",
-                                  "reasoning": "The user adequately identifies and utilizes some resources and strategies, but lacks creativity and proactive seeking of new methods, resulting in a moderate impact on efficiency.",
-                                  "sentry_triggered": "",
-                                  "skill_count_check": "7"
+                                  "skill": {
+                                    "key": "RESOURCEFULNESS",
+                                    "label": "Resourcefulness"
+                                  },
+                                  "rationale": "The user adequately identifies and utilizes some resources and strategies, but lacks creativity and proactive seeking of new methods, resulting in a moderate impact on efficiency.",
+                                  "evaluated_at": "2025-04-29T05:31:42.277Z",
+                                  "evaluation_id": "53677334-9f8c-493e-b1a1-05cf88f567d0"
                                 }
                               ],
                               "feedback": null,
@@ -753,7 +814,7 @@
                           "user_id": "4b8d1e7a-9c5f-4a2d-8e6b-3f1c9d7a5e2b",
                           "email": "alice.smith@company.com",
                           "recommendation": "Approved",
-                          "demonstrated_proficiency": 4.1,
+                          "overall_score": 4.1,
                           "created_at": "2025-05-28T10:15:30.789Z",
                           "updated_at": "2025-05-28T12:20:45.012Z",
                           "application_no": 3,
@@ -762,7 +823,7 @@
                             {
                               "id": "654b55ae-d652-43b3-a405-fb11656f006b",
                               "email": "alice.smith@company.com",
-                              "scenario": "Client Communication",
+                              "scenario_name": "Client Communication",
                               "scenario_type": {
                                 "key": "CHAT",
                                 "label": "Chat"
@@ -772,16 +833,16 @@
                               "eval_results": [
                                 {
                                   "score": "4",
-                                  "skill": "Client_Empathy",
-                                  "campaign": "",
-                                  "created_at": "f53af9b2-c15d-4a0e-a0c5-3c3696a553d4",
-                                  "eval_uuid": "ef341cb3-27d7-4755-af9f-9055ab86090d",
-                                  "reasoning": "The user demonstrates excellent understanding of client needs and shows strong empathy in all interactions.",
-                                  "sentry_triggered": "",
-                                  "skill_count_check": "6"
+                                  "skill": {
+                                    "key": "CLIENT_EMPATHY",
+                                    "label": "Client Empathy"
+                                  },
+                                  "rationale": "The user demonstrates excellent understanding of client needs and shows strong empathy in all interactions.",
+                                  "evaluated_at": "2025-04-28T08:45:20.123Z",
+                                  "evaluation_id": "ef341cb3-27d7-4755-af9f-9055ab86090d"
                                 }
                               ],
-                              "feedback": "Excellent performance in client communication scenarios.",
+                              "feedback": null,
                               "created_at": "2025-04-28T08:45:20.123",
                               "updated_at": "2025-04-28T10:30:15.456"
                             }

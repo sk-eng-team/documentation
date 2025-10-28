@@ -13,7 +13,11 @@
       {
         "group": "Overview",
         "icon": "book",
-        "pages": ["overview/introduction", "api-reference/endpoint/pagination"]
+        "pages": [
+          "overview/introduction",
+          "overview/pagination",
+          "overview/filtering"
+        ]
       },
       {
         "group": "API Reference",
