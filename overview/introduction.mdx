@@ -11,27 +11,36 @@ This guide provides a comprehensive description of the API, including authentica
 
 All API requests must be directed to the following base URL:
 
-```http
-BaseUrl: https://api.external.hirednow.ai
-```
+<Tip>**Base URL**: https://api.external.hirednow.ai</Tip>
 
 # Authentication
 
-> HiredNow APIs use API Key-based authentication.
+<Callout icon="key" color="#FFC107" iconType="regular">
+  HiredNow APIs use API Key-based authentication.
+</Callout>
 
 <Steps>
-  <Step title="First Step: Obtain an API Key">
-    Contact your project administrator at HiredNow or support team to obtain an API key for your environment.
+   <Step title="Obtain API Credentials">
+    Contact your HiredNow account representative or reach out to
+    **devsupport@hirednow.com** to request API access credentials.
   </Step>
+  <Step title="Set Up Authentication">
+  Include your API key in all requests using the `Authorization` header: ```http
+  Authorization: Bearer YOUR_API_KEY ``` Learn more in the
+  [Introduction](/overview/introduction) section.
 
-  <Step title="Second Step: Include API Key in Headers">
-    Include your API key in the request header as shown below:
-
-    <Tabs>
+   <Tabs>
+   <Tab title="Bash">
+        ```bash  theme={null}
+        curl -X GET "https://api.external.hirednow.ai/campaigns" \
+          -H "Authorization: Bearer <YOUR_API_KEY>" \
+          -H "Content-Type: application/json"
+        ```
+      </Tab>
       <Tab title="HTTP">
         ```http  theme={null}
         GET /campaigns HTTP/1.1
-        Host: api.external.hirednow.ai
+        Host: api.external.hirednow.ai/[path]
         Authorization: Bearer <YOUR_API_KEY>
         Content-Type: application/json
         ```
@@ -41,7 +50,7 @@ BaseUrl: https://api.external.hirednow.ai
         ```json  theme={null}
         {
           "method": "GET",
-          "url": "https://api.external.hirednow.ai/v1/campaigns",
+          "url": "https://api.external.hirednow.ai/[path]",
           "headers": {
             "Authorization": "Bearer <YOUR_API_KEY>",
             "Content-Type": "application/json"
@@ -49,7 +58,16 @@ BaseUrl: https://api.external.hirednow.ai
         }
         ```
       </Tab>
+
+
     </Tabs>
 
   </Step>
+
+<Step title="Make Your First Request">
+  Start by fetching available campaigns: ```bash curl -X GET
+  "https://api.external.hirednow.ai/v1/[path]" \ -H "Authorization: Bearer
+  YOUR_API_KEY" \ -H "Content-Type: application/json" ```
+</Step>
+
 </Steps>
