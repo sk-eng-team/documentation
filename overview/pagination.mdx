@@ -14,7 +14,7 @@ For example, this is an API request to list campaigns results that uses role bas
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/campaigns/role/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/role/results \
   -H "Authorization: Bearer sk_test_key" \
   -d campaign_id=320009f5-eb09-4a58-94a8-aad39e6ddd14 \
   -d limit=3
@@ -78,7 +78,7 @@ Follow these steps to manually paginate results. This process is different when 
 <CodeGroup>
 
 ```bash cURL
-curl https://api.external.hirednow.ai/campaigns/role/results \
+curl https://api.external.hirednow.ai/v1/campaigns/role/results \
   -H "Authorization: Bearer sk_test_key"\
   -d campaign_id=320009f5-eb09-4a58-94a8-aad39e6ddd14
 ```
@@ -94,7 +94,7 @@ Repeat this step until you've retrieved all of the objects that you want to find
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/campaigns \
+curl -G https://api.external.hirednow.ai/v1/campaigns \
   -H "Authorization: Bearer sk_test_key" \
   -d campaign_id=320009f5-eb09-4a58-94a8-aad39e6ddd14 \
   -d starting_after=105
