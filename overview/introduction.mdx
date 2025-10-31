@@ -29,45 +29,24 @@ All API requests must be directed to the following base URL:
   Authorization: Bearer YOUR_API_KEY ``` Learn more in the
   [Introduction](/overview/introduction) section.
 
-   <Tabs>
-   <Tab title="cURL">
-        ```bash  theme={null}
-        curl -X GET "https://api.external.hirednow.ai/campaigns" \
+  <CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.external.hirednow.ai/campaigns" \
           -H "Authorization: Bearer <YOUR_API_KEY>" \
           -H "Content-Type: application/json"
-        ```
-      </Tab>
-      <Tab title="HTTP">
-        ```http  theme={null}
-        GET /campaigns HTTP/1.1
-        Host: api.external.hirednow.ai/[path]
-        Authorization: Bearer <YOUR_API_KEY>
-        Content-Type: application/json
-        ```
-      </Tab>
+```
 
-      <Tab title="JSON">
-        ```json  theme={null}
-        {
-          "method": "GET",
-          "url": "https://api.external.hirednow.ai/[path]",
-          "headers": {
-            "Authorization": "Bearer <YOUR_API_KEY>",
-            "Content-Type": "application/json"
-          }
-        }
-        ```
-      </Tab>
+```http HTTP theme={null}
+GET /campaigns HTTP/1.1
+Host: api.external.hirednow.ai/[path]
+Authorization: Bearer <YOUR_API_KEY>
+Content-Type: application/json
+```
 
+</CodeGroup>
 
-    </Tabs>
-
-  </Step>
-
-<Step title="Make Your First Request">
-  Start by fetching available campaigns: ```bash curl -X GET
-  "https://api.external.hirednow.ai/v1/[path]" \ -H "Authorization: Bearer
-  YOUR_API_KEY" \ -H "Content-Type: application/json" ```
-</Step>
+ </Step>
 
 </Steps>
+````

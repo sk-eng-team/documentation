@@ -24,40 +24,9 @@ To retrieve all campaign results sorted by the most recent first, pass the `sort
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d sort=desc
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  sort: "desc",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'sort': 'desc'
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
@@ -75,40 +44,9 @@ To retrieve all campaign results sorted from oldest to newest, pass the `sort` p
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d sort=asc
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  sort: "asc",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'sort': 'asc'
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
@@ -127,43 +65,10 @@ To get all results up to a certain date, use the `end_date` parameter. This will
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d end_date=2024-01-01 \
   -d sort=desc
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  end_date: "2024-01-01",
-  sort: "desc",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'end_date': '2024-01-01',
-        'sort': 'desc'
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
@@ -182,43 +87,10 @@ To get all results from a specific date onwards, use the `start_date` parameter.
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-06-01 \
   -d sort=desc
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  start_date: "2024-06-01",
-  sort: "desc",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'start_date': '2024-06-01',
-        'sort': 'desc'
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
@@ -238,46 +110,11 @@ To get results for a specific date range with the most recent first, use both `s
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-07-01 \
   -d end_date=2024-09-30 \
   -d sort=desc
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  start_date: "2024-07-01",
-  end_date: "2024-09-30",
-  sort: "desc",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'start_date': '2024-07-01',
-        'end_date': '2024-09-30',
-        'sort': 'desc'
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
@@ -297,46 +134,11 @@ To get results for a specific date range in chronological order, use both `start
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-07-01 \
   -d end_date=2024-09-30 \
   -d sort=asc
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  start_date: "2024-07-01",
-  end_date: "2024-09-30",
-  sort: "asc",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'start_date': '2024-07-01',
-        'end_date': '2024-09-30',
-        'sort': 'asc'
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
@@ -359,49 +161,12 @@ For comprehensive monthly reports, combine date range filtering with a higher re
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-09-01 \
   -d end_date=2024-09-30 \
   -d sort=desc \
   -d limit=100
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  start_date: "2024-09-01",
-  end_date: "2024-09-30",
-  sort: "desc",
-  limit: "100",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'start_date': '2024-09-01',
-        'end_date': '2024-09-30',
-        'sort': 'desc',
-        'limit': 100
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
@@ -421,46 +186,11 @@ For syncing new data since your last fetch, filter by a specific campaign and st
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-10-20 \
   -d sort=asc \
   -d limit=100
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  start_date: "2024-10-20",
-  sort: "asc",
-  limit: "100",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'start_date': '2024-10-20',
-        'sort': 'asc',
-        'limit': 100
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
@@ -479,43 +209,10 @@ To retrieve all results for a specific day, set both `start_date` and `end_date`
 
 ```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns/results \
-  -H "Authorization: Bearer sk_test_key" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-10-15 \
   -d end_date=2024-10-15
-```
-
-```javascript JavaScript
-const params = new URLSearchParams({
-  campaign_id: "123e4567-e89b-12d3-a456-426614174000",
-  start_date: "2024-10-15",
-  end_date: "2024-10-15",
-});
-
-const response = await fetch(
-  `https://api.external.hirednow.ai/campaigns/results?${params}`,
-  {
-    headers: {
-      Authorization: "Bearer sk_test_key",
-    },
-  }
-);
-const data = await response.json();
-```
-
-```python Python
-import requests
-
-response = requests.get(
-    'https://api.external.hirednow.ai/campaigns/results',
-    headers={'Authorization': 'Bearer sk_test_key'},
-    params={
-        'campaign_id': '123e4567-e89b-12d3-a456-426614174000',
-        'start_date': '2024-10-15',
-        'end_date': '2024-10-15'
-    }
-)
-data = response.json()
 ```
 
 </CodeGroup>
