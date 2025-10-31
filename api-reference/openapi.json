@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://api.external.hirednow.ai"
+      "url": "http://localhost:3000/dev/"
     }
   ],
   "security": [
@@ -33,12 +33,36 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": ["data"],
                   "properties": {
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/Campaign"
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Unique identifier for the campaign"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Internal name of the campaign"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Timestamp when the campaign was created"
+                          },
+                          "display_name": {
+                            "type": "string",
+                            "description": "Human-readable display name for the campaign"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": ["SESSION_COMPLETION", "ROLE_SUBMISSION"],
+                            "description": "Type of campaign"
+                          }
+                        }
                       }
                     }
                   }
@@ -46,18 +70,18 @@
                 "example": {
                   "data": [
                     {
-                      "campaign_id": "3f7a9c2e-5d8b-4e1a-9c6f-8b2d4e7a1c9f",
-                      "campaign_name": "summer-sales-2024",
-                      "campaign_created_at": "2024-06-09T01:17:24.137Z",
-                      "campaign_display_name": "Summer Sales Campaign 2024",
-                      "campaign_type": "SESSION_COMPLETION"
+                      "id": "3f7a9c2e-5d8b-4e1a-9c6f-8b2d4e7a1c9f",
+                      "name": "summer-sales-2024",
+                      "created_at": "2024-06-09T01:17:24.137Z",
+                      "display_name": "Summer Sales Campaign 2024",
+                      "type": "SESSION_COMPLETION"
                     },
                     {
-                      "campaign_id": "8e4b1f7c-3a9d-4c2e-8f5b-1d7a9c4e6b8f",
-                      "campaign_name": "holiday-promotion-2024",
-                      "campaign_created_at": "2024-06-09T01:17:21.088Z",
-                      "campaign_display_name": "Holiday Promotion 2024",
-                      "campaign_type": "ROLE_SUBMISSION"
+                      "id": "8e4b1f7c-3a9d-4c2e-8f5b-1d7a9c4e6b8f",
+                      "name": "holiday-promotion-2024",
+                      "created_at": "2024-06-09T01:17:21.088Z",
+                      "display_name": "Holiday Promotion 2024",
+                      "type": "ROLE_SUBMISSION"
                     }
                   ]
                 }
@@ -241,6 +265,23 @@
                           }
                         }
                       },
+                      "additional_scores": {
+                        "type": "object",
+                        "nullable": true,
+                        "description": "Additional scoring metrics and assessments",
+                        "properties": {
+                          "cefr": {
+                            "type": "object",
+                            "description": "CEFR (Common European Framework of Reference for Languages) assessment",
+                            "properties": {
+                              "score": {
+                                "type": "string",
+                                "description": "CEFR level (e.g., A1, A2, B1, B2, C1, C2)"
+                              }
+                            }
+                          }
+                        }
+                      },
                       "created_at": {
                         "type": "string",
                         "format": "date-time",
@@ -278,8 +319,9 @@
                           "key": "JUDGMENT",
                           "label": "Judgment"
                         },
-                        "rationale": "The candidate makes reasonable decisions in straightforward situations but struggles with uncertainty, as seen in the inappropriate response to the CEO's complaint and ignoring the vague project email.",
-                        "evaluated_at": "2025-04-29T00:01:42.277Z"
+                        "evaluated_at": "2025-04-29T00:01:42.277Z",
+                        "evaluation_id": "c204d8dd-8550-4c39-bf2c-23c11c090932",
+                        "rationale": "The candidate makes reasonable decisions in straightforward situations but struggles with uncertainty, as seen in the inappropriate response to the CEO's complaint and ignoring the vague project email."
                       },
                       {
                         "score": "3",
@@ -347,6 +389,11 @@
                           "improvement_area": "Engage more deeply with tasks to identify and address workflow challenges, showcasing your ability to solve problems effectively."
                         }
                       ]
+                    },
+                    "additional_scores": {
+                      "cefr": {
+                        "score": "C1"
+                      }
                     },
                     "created_at": "2025-04-29T00:01:42.277Z",
                     "updated_at": "2025-04-29T00:01:42.277Z",
@@ -512,23 +559,33 @@
                                 "format": "email",
                                 "description": "Email address of the user"
                               },
-                              "recommendation": {
+
+                              "recommendation_status": {
                                 "type": "string",
-                                "description": "Recommendation status for the user (e.g., Tentative, Approved, Rejected)"
+                                "description": "Recommendation status for the user (e.g., NOT_RECOMMENDED, RECOMMENDED, STRONGLY_RECOMMENDED)"
                               },
                               "overall_score": {
                                 "type": "number",
                                 "format": "float",
                                 "description": "Overall score representing the user's demonstrated proficiency level"
                               },
-                              "scenario_score": {
-                                "type": "number",
-                                "format": "float",
-                                "description": "Score for the specific scenario (optional)"
-                              },
-                              "scenario_name": {
-                                "type": "string",
-                                "description": "Name of the scenario (optional)"
+                              "additional_scores": {
+                                "type": "object",
+                                "optional": true,
+                                "nullable": true,
+                                "description": "Additional scoring metrics and assessments",
+                                "properties": {
+                                  "cefr": {
+                                    "type": "object",
+                                    "description": "CEFR (Common European Framework of Reference for Languages) assessment",
+                                    "properties": {
+                                      "score": {
+                                        "type": "string",
+                                        "description": "CEFR level (e.g., A1, A2, B1, B2, C1, C2)"
+                                      }
+                                    }
+                                  }
+                                }
                               },
                               "created_at": {
                                 "type": "string",
@@ -587,14 +644,32 @@
                                 "format": "email",
                                 "description": "Email address of the user"
                               },
-                              "recommendation": {
+                              "recommendation_status": {
                                 "type": "string",
-                                "description": "Recommendation status for the user (e.g., Tentative, Approved, Rejected)"
+                                "description": "Recommendation status for the user (e.g., NOT_RECOMMENDED, RECOMMENDED, STRONGLY_RECOMMENDED)"
                               },
                               "overall_score": {
                                 "type": "number",
                                 "format": "float",
                                 "description": "Overall score representing the user's demonstrated proficiency level"
+                              },
+                              "additional_scores": {
+                                "type": "object",
+                                "optional": true,
+                                "nullable": true,
+                                "description": "Additional scoring metrics and assessments",
+                                "properties": {
+                                  "cefr": {
+                                    "type": "object",
+                                    "description": "CEFR (Common European Framework of Reference for Languages) assessment",
+                                    "properties": {
+                                      "score": {
+                                        "type": "string",
+                                        "description": "CEFR level (e.g., A1, A2, B1, B2, C1, C2)"
+                                      }
+                                    }
+                                  }
+                                }
                               },
                               "created_at": {
                                 "type": "string",
@@ -605,10 +680,6 @@
                                 "type": "string",
                                 "format": "date-time",
                                 "description": "Timestamp when the result record was last updated"
-                              },
-                              "application_no": {
-                                "type": "integer",
-                                "description": "Application number for this result"
                               },
                               "order_index": {
                                 "type": "string",
@@ -653,7 +724,7 @@
                                       "format": "uuid",
                                       "description": "Unique identifier for the session"
                                     },
-                                    "score": {
+                                    "scenario_score": {
                                       "type": "number",
                                       "format": "float",
                                       "description": "Overall score for this scenario"
@@ -740,28 +811,48 @@
                           "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
                           "user_id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
                           "email": "userZ@gmail.com",
-                          "recommendation": "Tentative",
+                          "recommendation_status": "RECOMMENDED",
                           "overall_score": 3.37,
-                          "scenario_score": 3.2,
-                          "scenario_name": "Inbox Triage",
+                          "additional_scores": {
+                            "cefr": {
+                              "score": "C1"
+                            }
+                          },
                           "created_at": "2025-05-29T00:01:42.277Z",
                           "updated_at": "2025-04-29T00:01:42.277Z",
-                          "order_index": "29462"
+                          "order_index": "71747"
                         },
                         {
                           "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                           "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
                           "user_id": "9e5a2c8f-4b1d-4e7a-8c3f-1b6d9a5e2c8f",
                           "email": "jane.doe@example.com",
-                          "recommendation": "Approved",
+                          "recommendation_status": "STRONGLY_RECOMMENDED",
                           "overall_score": 4.2,
+                          "additional_scores": {},
                           "created_at": "2025-05-28T14:30:15.123Z",
                           "updated_at": "2025-05-28T16:45:30.456Z",
-                          "order_index": "29463"
+                          "order_index": "71686"
+                        },
+                        {
+                          "id": "d4e9f2a1-7b3c-4d8e-a5f6-1c2d3e4f5a6b",
+                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                          "user_id": "0a5f53fd-5982-4390-b0a1-9c1d1ade78e7",
+                          "email": "john.smith@company.com",
+                          "recommendation_status": "NOT_RECOMMENDED",
+                          "overall_score": 2.38,
+                          "additional_scores": {
+                            "cefr": {
+                              "score": "B1"
+                            }
+                          },
+                          "created_at": "2025-10-30T13:37:43.175Z",
+                          "updated_at": "2025-10-30T13:37:43.175Z",
+                          "order_index": "71680"
                         }
                       ],
-                      "has_more": false,
-                      "last_record_index": "29463"
+                      "has_more": true,
+                      "last_record_index": "71680"
                     }
                   },
                   "DETAILED": {
@@ -773,11 +864,15 @@
                           "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
                           "user_id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
                           "email": "userZ@gmail.com",
-                          "recommendation": "Tentative",
+                          "recommendation_status": "RECOMMENDED",
                           "overall_score": 3.37,
+                          "additional_scores": {
+                            "cefr": {
+                              "score": "C1"
+                            }
+                          },
                           "created_at": "2025-05-29T00:01:42.277Z",
                           "updated_at": "2025-04-29T00:01:42.277Z",
-                          "application_no": 1,
                           "order_index": "29462",
                           "score_details": [
                             {
@@ -789,7 +884,7 @@
                                 "label": "Threaded Email"
                               },
                               "session_id": "d27615a6-4749-4fe6-8968-98f69094ce9f",
-                              "score": 3.43,
+                              "scenario_score": 3.43,
                               "eval_results": [
                                 {
                                   "score": "3",
@@ -813,11 +908,15 @@
                           "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
                           "user_id": "4b8d1e7a-9c5f-4a2d-8e6b-3f1c9d7a5e2b",
                           "email": "alice.smith@company.com",
-                          "recommendation": "Approved",
+                          "recommendation_status": "RECOMMENDED",
                           "overall_score": 4.1,
+                          "additional_scores": {
+                            "cefr": {
+                              "score": "C1"
+                            }
+                          },
                           "created_at": "2025-05-28T10:15:30.789Z",
                           "updated_at": "2025-05-28T12:20:45.012Z",
-                          "application_no": 3,
                           "order_index": "29464",
                           "score_details": [
                             {
@@ -829,7 +928,7 @@
                                 "label": "Chat"
                               },
                               "session_id": "c14cf74d-1a41-4e3c-9aba-5f0aff7318bf",
-                              "score": 4.0,
+                              "scenario_score": 4.0,
                               "eval_results": [
                                 {
                                   "score": "4",
@@ -931,7 +1030,6 @@
         }
       },
       "Error": {
-        "required": ["error"],
         "type": "object",
         "properties": {
           "error": {
