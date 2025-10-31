@@ -25,9 +25,8 @@ All API requests must be directed to the following base URL:
     **devsupport@hirednow.com** to request API access credentials.
   </Step>
   <Step title="Set Up Authentication">
-  Include your API key in all requests using the `Authorization` header: ```http
-  Authorization: Bearer YOUR_API_KEY ``` Learn more in the
-  [Introduction](/overview/introduction) section.
+  Include your API key in all requests using the `Authorization` header: ```
+  Authorization: Bearer <YOUR_API_KEY> ```.
 
   <CodeGroup>
 
@@ -38,7 +37,7 @@ curl -X GET "https://api.external.hirednow.ai/v1/campaigns" \
 ```
 
 ```http HTTP theme={null}
-GET /campaigns HTTP/1.1
+GET /v1/campaigns HTTP/1.1
 Host: api.external.hirednow.ai/[path]
 Authorization: Bearer <YOUR_API_KEY>
 Content-Type: application/json
