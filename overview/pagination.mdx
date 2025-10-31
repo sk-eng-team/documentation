@@ -3,9 +3,7 @@ title: "Pagination"
 description: "Learn how to paginate results for list and search endpoints"
 ---
 
-# How pagination works
-
-## Learn how to paginate results for list and search endpoints.
+## How pagination works
 
 The API has list and search endpoints that can return multiple objects, such as listing campaigns or searching for results. To mitigate negative impacts to performance, these endpoints don't return all results at once. Instead, the API returns one page of results per API call, with each page containing up to 20 results by default. Use the `limit` parameter to change the number of results per page.
 
@@ -65,13 +63,7 @@ Keep in mind the following details when using these endpoints:
 - Objects are sorted by `created_at` in ascending order (oldest first) by default.
 - The `has_more` property indicates if there are additional objects that weren't returned in this request.
 
-Instead of looping over the `data` array to go through objects, you should paginate results. This prevents you from missing some objects when the `has_more` parameter is `true`.
-
-## Manual pagination
-
-Follow these steps to manually paginate results. This process is different when calling a list endpoint or a search endpoint.
-
-### List endpoints
+### Follow these steps to paginate results
 
 1. Make an API call to list the objects that you want to find.
 
