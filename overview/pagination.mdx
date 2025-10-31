@@ -11,33 +11,44 @@ The API has list and search endpoints that can return multiple objects, such as 
 
 For example, this is an API request to list campaigns results that uses role based evaluations, with a `limit` of 3:
 
-```bash
-curl -G https://api.external.hirednow.ai/campaigns \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+<CodeGroup>
+
+```bash cURL
+curl -G https://api.external.hirednow.ai/campaigns/role/results \
+  -H "Authorization: Bearer sk_test_key" \
+  -d campaign_id=320009f5-eb09-4a58-94a8-aad39e6ddd14 \
   -d limit=3
+
 ```
+
+</CodeGroup>
 
 The response from the API contains one page with 3 results:
 
-```json
+<CodeGroup>
+
+```bash Response
 {
   "data": [
     {
-      "id": "550e8400-e29b-41d4-a716-446655440005",
-      "object": "campaign",
-      "name": "Summer Campaign",
+      "id": "aa430250-883a-46be-98ce-a978847740a6",
+      "campaign_id": "320009f5-eb09-4a58-94a8-aad39e6ddd14",
+      "user_id": "1c493040-b756-4aea-a043-54d9c2dd1857",
+      ...
       "order_index": 100
     },
     {
-      "id": "550e8400-e29b-41d4-a716-446655440004",
-      "object": "campaign",
-      "name": "Spring Campaign",
+      "id": "0265ea37-d286-4395-b9d0-f0d21b9ad634",
+      "campaign_id": "320009f5-eb09-4a58-94a8-aad39e6ddd14",
+      "user_id": "3e19b1dc-d32d-49e2-82c6-260fb81996c3",
+      ...
       "order_index": 101
     },
     {
-      "id": "550e8400-e29b-41d4-a716-446655440003",
-      "object": "campaign",
-      "name": "Winter Campaign",
+      "id": "9c0a3ed8-44ee-47f1-a497-c1ccd2893711",
+      "campaign_id": "320009f5-eb09-4a58-94a8-aad39e6ddd14",
+      "user_id": "0d1fea0f-6415-42f2-a92d-bdb82b0fe4fd",
+      ...
       "order_index": 105
     }
   ],
@@ -45,6 +56,8 @@ The response from the API contains one page with 3 results:
   "last_record_id": 105
 }
 ```
+
+</CodeGroup>
 
 Keep in mind the following details when using these endpoints:
 
@@ -62,10 +75,15 @@ Follow these steps to manually paginate results. This process is different when 
 
 1. Make an API call to list the objects that you want to find.
 
-```bash
-curl https://api.external.hirednow.ai/campaigns \
-  -H "Authorization: Bearer <YOUR_API_KEY>"
+<CodeGroup>
+
+```bash cURL
+curl https://api.external.hirednow.ai/campaigns/role/results \
+  -H "Authorization: Bearer sk_test_key"\
+  -d campaign_id=320009f5-eb09-4a58-94a8-aad39e6ddd14
 ```
+
+</CodeGroup>
 
 2. In the response, check the value of `has_more`:
    - If the value is `false`, you've retrieved all the objects.
@@ -73,11 +91,16 @@ curl https://api.external.hirednow.ai/campaigns \
 
 Repeat this step until you've retrieved all of the objects that you want to find.
 
-```bash
+<CodeGroup>
+
+```bash cURL
 curl -G https://api.external.hirednow.ai/campaigns \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Authorization: Bearer sk_test_key" \
+  -d campaign_id=320009f5-eb09-4a58-94a8-aad39e6ddd14 \
   -d starting_after=105
 ```
+
+</CodeGroup>
 
 ## Parameters
 
@@ -97,13 +120,17 @@ curl -G https://api.external.hirednow.ai/campaigns \
 
 All paginated endpoints return responses in the following format:
 
-```json
+<CodeGroup>
+
+```bash Response
 {
   "data": [...],
   "has_more": true,
   "last_record_id": 105
 }
 ```
+
+</CodeGroup>
 
 <ResponseField name="data" type="array">
   Array of objects for the current page
