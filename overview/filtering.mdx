@@ -23,7 +23,7 @@ To retrieve all campaign results sorted by the most recent first, pass the `sort
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d sort=desc
@@ -43,7 +43,7 @@ To retrieve all campaign results sorted from oldest to newest, pass the `sort` p
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d sort=asc
@@ -64,7 +64,7 @@ To get all results up to a certain date, use the `end_date` parameter. This will
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d end_date=2024-01-01 \
@@ -86,7 +86,7 @@ To get all results from a specific date onwards, use the `start_date` parameter.
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-06-01 \
@@ -109,7 +109,7 @@ To get results for a specific date range with the most recent first, use both `s
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-07-01 \
@@ -133,7 +133,7 @@ To get results for a specific date range in chronological order, use both `start
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-07-01 \
@@ -155,12 +155,12 @@ For comprehensive monthly reports, combine date range filtering with a higher re
 - `start_date=2024-09-01` - First day of the month (September 1, 2024)
 - `end_date=2024-09-30` - Last day of the month (September 30, 2024)
 - `sort=desc` - Show most recent results first
-- `limit=100` - Retrieve up to 100 results per page (default is 20)
+- `limit=100` - Retrieve up to 100 results per page (default is 10)
 
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-09-01 \
@@ -185,7 +185,7 @@ For syncing new data since your last fetch, filter by a specific campaign and st
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-10-20 \
@@ -208,11 +208,33 @@ To retrieve all results for a specific day, set both `start_date` and `end_date`
 <CodeGroup>
 
 ```bash cURL
-curl -G https://api.external.hirednow.ai/v1/campaigns/results \
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
   -H "Authorization: Bearer <YOUR_API_KEY>" \
   -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
   -d start_date=2024-10-15 \
   -d end_date=2024-10-15
+```
+
+</CodeGroup>
+
+### Data after a certain record
+
+To retrieve results after a specific record, use the `starting_after` parameter with the last records `order_index` value with `sort=asc`. This is useful when you want to continue fetching data from where you left off.
+
+**Parameters:**
+
+- `campaign_id=123e4567-e89b-12d3-a456-426614174000` - Filter to a specific campaign
+- `starting_after=1729612800000` - Fetch results after this record
+- `limit=50` - Number of results to return per page
+
+<CodeGroup>
+
+```bash cURL
+curl -G https://api.external.hirednow.ai/v1/campaigns/session/results \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -d campaign_id=123e4567-e89b-12d3-a456-426614174000 \
+  -d starting_after=1729612800000 \
+  -d sort=asc \
 ```
 
 </CodeGroup>
@@ -243,9 +265,16 @@ curl -G https://api.external.hirednow.ai/v1/campaigns/results \
   100, and the default is 20.
 </ParamField>
 
+<ParamField query="starting_after" type="integer">
+  A cursor for use in pagination. This is a big integer value that returns
+  results after this cursor. Use this to continue fetching data from where you
+  left off in a previous request.
+</ParamField>
+
 ## Tips
 
 - Combine `start_date` and `end_date` to get data for a specific date range
 - Use `sort=desc` for the most recent data first, which is useful for dashboards and reporting
 - Use `sort=asc` for incremental syncs to process data in chronological order
 - Set `start_date` and `end_date` to the same value to get data for a single day
+- Use `starting_after` for cursor-based pagination to efficiently fetch large datasets in batches
