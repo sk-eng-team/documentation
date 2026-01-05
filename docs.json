@@ -13,7 +13,11 @@
       {
         "group": "Overview",
         "icon": "book",
+        "interaction": {
+          "drilldown": true
+        },
         "pages": [
+          "index",
           "overview/introduction",
           "overview/pagination",
           "overview/filtering"
