@@ -195,46 +195,79 @@
                         "format": "uuid",
                         "description": "Unique identifier for the evaluation result"
                       },
-                      "campaign_id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Unique identifier of the campaign"
-                      },
-                      "email": {
-                        "type": "string",
-                        "format": "email",
-                        "description": "Email address of the user"
-                      },
-                      "user_id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Unique identifier of the user"
-                      },
-                      "session_id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Unique identifier for the session"
-                      },
-                      "scenario_score": {
+                      "score": {
                         "type": "number",
                         "format": "float",
                         "description": "Overall score for the scenario"
                       },
-                      "scenario_name": {
-                        "type": "string",
-                        "description": "Name of the scenario that was evaluated"
-                      },
-                      "scenario_type": {
+                      "campaign": {
                         "type": "object",
-                        "description": "Type of scenario with key and label",
+                        "description": "Campaign information",
                         "properties": {
-                          "key": {
+                          "id": {
                             "type": "string",
-                            "description": "Scenario type key (e.g., EMAIL, CHAT, THREADED_EMAIL)"
+                            "format": "uuid",
+                            "description": "Unique identifier of the campaign"
                           },
-                          "label": {
+                          "name": {
                             "type": "string",
-                            "description": "Human-readable scenario type label (e.g., Email, Chat, Threaded Email)"
+                            "description": "Name of the campaign"
+                          }
+                        }
+                      },
+                      "user": {
+                        "type": "object",
+                        "description": "User information",
+                        "properties": {
+                          "email": {
+                            "type": "string",
+                            "format": "email",
+                            "description": "Email address of the user"
+                          },
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Unique identifier of the user"
+                          }
+                        }
+                      },
+                      "session": {
+                        "type": "object",
+                        "description": "Session information",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Unique identifier for the session"
+                          }
+                        }
+                      },
+                      "scenario": {
+                        "type": "object",
+                        "description": "Scenario information",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Unique identifier of the scenario"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Name of the scenario that was evaluated"
+                          },
+                          "type": {
+                            "type": "object",
+                            "description": "Type of scenario with key and label",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "description": "Scenario type key (e.g., EMAIL, CHAT, THREADED_EMAIL)"
+                              },
+                              "label": {
+                                "type": "string",
+                                "description": "Human-readable scenario type label (e.g., Email, Chat, Threaded Email)"
+                              }
+                            }
                           }
                         }
                       },
@@ -357,15 +390,25 @@
                 "example": [
                   {
                     "id": "f04352f1-2452-4cb7-8bad-56d6a089d56a",
-                    "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
-                    "email": "userR@gmail.com",
-                    "user_id": "7a3f8e12-9b4d-4c7a-8f1e-2d6b5c8a9e3f",
-                    "session_id": "8395386-a15f-44cd-acca-84d51cef5aaf",
-                    "scenario_score": 3.2,
-                    "scenario_name": "Inbox Triage",
-                    "scenario_type": {
-                      "key": "EMAIL",
-                      "label": "Email"
+                    "score": 3.2,
+                    "campaign": {
+                      "id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                      "name": "Summer Sales Campaign 2024"
+                    },
+                    "user": {
+                      "email": "john.smith@example.com",
+                      "id": "7a3f8e12-9b4d-4c7a-8f1e-2d6b5c8a9e3f"
+                    },
+                    "session": {
+                      "id": "8395386a-a15f-44cd-acca-84d51cef5aaf"
+                    },
+                    "scenario": {
+                      "id": "c764f25e-7920-40d9-8984-7b0fc17d12ff",
+                      "name": "Inbox Triage",
+                      "type": {
+                        "key": "EMAIL",
+                        "label": "Threaded Email"
+                      }
                     },
                     "eval_results": [
                       {
@@ -599,30 +642,45 @@
                                 "format": "uuid",
                                 "description": "Unique identifier for the result record"
                               },
-                              "campaign_id": {
-                                "type": "string",
-                                "format": "uuid",
-                                "description": "Unique identifier of the campaign this result belongs to"
-                              },
-                              "user_id": {
-                                "type": "string",
-                                "format": "uuid",
-                                "description": "Unique identifier of the user who generated this result"
-                              },
-                              "email": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email address of the user"
-                              },
-
                               "recommendation_status": {
                                 "type": "string",
                                 "description": "Recommendation status for the user (e.g., NOT_RECOMMENDED, RECOMMENDED, STRONGLY_RECOMMENDED)"
                               },
+                              "campaign": {
+                                "type": "object",
+                                "description": "Campaign information",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "description": "Unique identifier of the campaign this result belongs to"
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Name of the campaign"
+                                  }
+                                }
+                              },
+                              "user": {
+                                "type": "object",
+                                "description": "User information",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "description": "Unique identifier of the user who generated this result"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "description": "Email address of the user"
+                                  }
+                                }
+                              },
                               "overall_score": {
                                 "type": "number",
                                 "format": "float",
-                                "description": "Overall score representing the user's demonstrated proficiency level"
+                                "description": "User's overall proficiency score, ranging from 0 (lowest) to 5 (highest)."
                               },
                               "additional_scores": {
                                 "type": "object",
@@ -684,20 +742,36 @@
                                 "format": "uuid",
                                 "description": "Unique identifier for the result record"
                               },
-                              "campaign_id": {
-                                "type": "string",
-                                "format": "uuid",
-                                "description": "Unique identifier of the campaign this result belongs to"
+                              "campaign": {
+                                "type": "object",
+                                "description": "Campaign information",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "description": "Unique identifier of the campaign this result belongs to"
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "description": "Name of the campaign"
+                                  }
+                                }
                               },
-                              "user_id": {
-                                "type": "string",
-                                "format": "uuid",
-                                "description": "Unique identifier of the user who generated this result"
-                              },
-                              "email": {
-                                "type": "string",
-                                "format": "email",
-                                "description": "Email address of the user"
+                              "user": {
+                                "type": "object",
+                                "description": "User information",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid",
+                                    "description": "Unique identifier of the user who generated this result"
+                                  },
+                                  "email": {
+                                    "type": "string",
+                                    "format": "email",
+                                    "description": "Email address of the user"
+                                  }
+                                }
                               },
                               "recommendation_status": {
                                 "type": "string",
@@ -751,35 +825,63 @@
                                       "format": "uuid",
                                       "description": "Unique identifier for the score detail record"
                                     },
-                                    "email": {
-                                      "type": "string",
-                                      "format": "email",
-                                      "description": "Email address of the user"
-                                    },
-                                    "scenario_name": {
-                                      "type": "string",
-                                      "description": "Name of the scenario that was evaluated"
-                                    },
-                                    "scenario_type": {
+                                    "user": {
                                       "type": "object",
-                                      "description": "Type of scenario with key and label",
+                                      "description": "User information",
                                       "properties": {
-                                        "key": {
+                                        "email": {
                                           "type": "string",
-                                          "description": "Scenario type key (e.g., EMAIL, CHAT, THREADED_EMAIL)"
+                                          "format": "email",
+                                          "description": "Email address of the user"
                                         },
-                                        "label": {
+                                        "id": {
                                           "type": "string",
-                                          "description": "Human-readable scenario type label (e.g., Email, Chat, Threaded Email)"
+                                          "format": "uuid",
+                                          "description": "Unique identifier of the user"
                                         }
                                       }
                                     },
-                                    "session_id": {
-                                      "type": "string",
-                                      "format": "uuid",
-                                      "description": "Unique identifier for the session"
+                                    "scenario": {
+                                      "type": "object",
+                                      "description": "Scenario information",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string",
+                                          "format": "uuid",
+                                          "description": "Unique identifier of the scenario"
+                                        },
+                                        "name": {
+                                          "type": "string",
+                                          "description": "Name of the scenario that was evaluated"
+                                        },
+                                        "type": {
+                                          "type": "object",
+                                          "description": "Type of scenario with key and label",
+                                          "properties": {
+                                            "key": {
+                                              "type": "string",
+                                              "description": "Scenario type key (e.g., EMAIL, CHAT, THREADED_EMAIL)"
+                                            },
+                                            "label": {
+                                              "type": "string",
+                                              "description": "Human-readable scenario type label (e.g., Email, Chat, Threaded Email)"
+                                            }
+                                          }
+                                        }
+                                      }
                                     },
-                                    "scenario_score": {
+                                    "session": {
+                                      "type": "object",
+                                      "description": "Session information",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string",
+                                          "format": "uuid",
+                                          "description": "Unique identifier for the session"
+                                        }
+                                      }
+                                    },
+                                    "score": {
                                       "type": "number",
                                       "format": "float",
                                       "description": "Overall score for this scenario"
@@ -863,10 +965,15 @@
                       "data": [
                         {
                           "id": "b7048779-259e-4c64-b7bf-2fb54403e936",
-                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
-                          "user_id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
-                          "email": "userZ@gmail.com",
                           "recommendation_status": "RECOMMENDED",
+                          "campaign": {
+                            "id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                            "name": "Summer Sales Campaign 2024"
+                          },
+                          "user": {
+                            "id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
+                            "email": "userZ@gmail.com"
+                          },
                           "overall_score": 3.37,
                           "additional_scores": {
                             "cefr": {
@@ -879,10 +986,15 @@
                         },
                         {
                           "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
-                          "user_id": "9e5a2c8f-4b1d-4e7a-8c3f-1b6d9a5e2c8f",
-                          "email": "jane.doe@example.com",
                           "recommendation_status": "STRONGLY_RECOMMENDED",
+                          "campaign": {
+                            "id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                            "name": "Holiday Promotion 2024"
+                          },
+                          "user": {
+                            "id": "9e5a2c8f-4b1d-4e7a-8c3f-1b6d9a5e2c8f",
+                            "email": "jane.doe@example.com"
+                          },
                           "overall_score": 4.2,
                           "additional_scores": {},
                           "created_at": "2025-05-28T14:30:15.123Z",
@@ -891,10 +1003,15 @@
                         },
                         {
                           "id": "d4e9f2a1-7b3c-4d8e-a5f6-1c2d3e4f5a6b",
-                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
-                          "user_id": "0a5f53fd-5982-4390-b0a1-9c1d1ade78e7",
-                          "email": "john.smith@company.com",
                           "recommendation_status": "NOT_RECOMMENDED",
+                          "campaign": {
+                            "id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                            "name": "Q4 Performance Review"
+                          },
+                          "user": {
+                            "id": "0a5f53fd-5982-4390-b0a1-9c1d1ade78e7",
+                            "email": "john.smith@company.com"
+                          },
                           "overall_score": 2.38,
                           "additional_scores": {
                             "cefr": {
@@ -916,30 +1033,43 @@
                       "data": [
                         {
                           "id": "b7048779-259e-4c64-b7bf-2fb54403e936",
-                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
-                          "user_id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
-                          "email": "userZ@gmail.com",
+                          "campaign": {
+                            "id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                            "name": "Summer Sales Campaign 2024"
+                          },
+                          "user": {
+                            "id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d",
+                            "email": "userZ@gmail.com"
+                          },
                           "recommendation_status": "RECOMMENDED",
                           "overall_score": 3.37,
+                          "created_at": "2025-05-29T00:01:42.277Z",
+                          "updated_at": "2025-04-29T00:01:42.277Z",
+                          "order_index": "29462",
                           "additional_scores": {
                             "cefr": {
                               "score": "C1"
                             }
                           },
-                          "created_at": "2025-05-29T00:01:42.277Z",
-                          "updated_at": "2025-04-29T00:01:42.277Z",
-                          "order_index": "29462",
                           "score_details": [
                             {
                               "id": "351c9b81-9bd8-496d-b26f-e131aa00c351",
-                              "email": "userZ@gmail.com",
-                              "scenario_name": "Scenario 1",
-                              "scenario_type": {
-                                "key": "THREADED_EMAIL",
-                                "label": "Threaded Email"
+                              "user": {
+                                "email": "userZ@gmail.com",
+                                "id": "2c9d4b8a-1e5f-4a7c-9b3d-6e8f1a2c4b5d"
                               },
-                              "session_id": "d27615a6-4749-4fe6-8968-98f69094ce9f",
-                              "scenario_score": 3.43,
+                              "scenario": {
+                                "id": "ee376ea2-0f36-4e19-9d5e-e21478ced74a",
+                                "name": "Planning an Event",
+                                "type": {
+                                  "key": "THREADED_EMAIL",
+                                  "label": "Threaded Email"
+                                }
+                              },
+                              "session": {
+                                "id": "d27615a6-4749-4fe6-8968-98f69094ce9f"
+                              },
+                              "score": 3.43,
                               "eval_results": [
                                 {
                                   "score": "3",
@@ -960,30 +1090,43 @@
                         },
                         {
                           "id": "c8d9e0f1-2345-6789-abcd-ef0123456789",
-                          "campaign_id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
-                          "user_id": "4b8d1e7a-9c5f-4a2d-8e6b-3f1c9d7a5e2b",
-                          "email": "alice.smith@company.com",
+                          "campaign": {
+                            "id": "5c8e2a9f-7b4d-4e1c-9a6f-3d8b5e1a7c4f",
+                            "name": "Holiday Promotion 2024"
+                          },
+                          "user": {
+                            "id": "4b8d1e7a-9c5f-4a2d-8e6b-3f1c9d7a5e2b",
+                            "email": "alice.smith@company.com"
+                          },
                           "recommendation_status": "RECOMMENDED",
                           "overall_score": 4.1,
+                          "created_at": "2025-05-28T10:15:30.789Z",
+                          "updated_at": "2025-05-28T12:20:45.012Z",
+                          "order_index": "29464",
                           "additional_scores": {
                             "cefr": {
                               "score": "C1"
                             }
                           },
-                          "created_at": "2025-05-28T10:15:30.789Z",
-                          "updated_at": "2025-05-28T12:20:45.012Z",
-                          "order_index": "29464",
                           "score_details": [
                             {
                               "id": "654b55ae-d652-43b3-a405-fb11656f006b",
-                              "email": "alice.smith@company.com",
-                              "scenario_name": "Client Communication",
-                              "scenario_type": {
-                                "key": "CHAT",
-                                "label": "Chat"
+                              "user": {
+                                "email": "alice.smith@company.com",
+                                "id": "4b8d1e7a-9c5f-4a2d-8e6b-3f1c9d7a5e2b"
                               },
-                              "session_id": "c14cf74d-1a41-4e3c-9aba-5f0aff7318bf",
-                              "scenario_score": 4.0,
+                              "scenario": {
+                                "id": "c764f25e-7920-40d9-8984-7b0fc17d12ff",
+                                "name": "Client Communication",
+                                "type": {
+                                  "key": "CHAT",
+                                  "label": "Chat"
+                                }
+                              },
+                              "session": {
+                                "id": "c14cf74d-1a41-4e3c-9aba-5f0aff7318bf"
+                              },
+                              "score": 4.0,
                               "eval_results": [
                                 {
                                   "score": "4",
