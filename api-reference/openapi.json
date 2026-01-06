@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://api.external.hirednow.ai"
+      "url": "http://localhost:3000/dev"
     }
   ],
   "security": [
@@ -98,7 +98,8 @@
                 "example": {
                   "error": {
                     "message": "Unauthorized",
-                    "statusCode": 401
+                    "status_code": 401,
+                    "request_id": "3a6e9741-268b-41a7-b924-5fa7019e6f26"
                   }
                 }
               }
@@ -511,7 +512,8 @@
                 "example": {
                   "error": {
                     "message": "Unauthorized",
-                    "statusCode": 401
+                    "status_code": 401,
+                    "request_id": "3a6e9741-268b-41a7-b924-5fa7019e6f26"
                   }
                 }
               }
@@ -527,7 +529,8 @@
                 "example": {
                   "error": {
                     "message": "Not found",
-                    "statusCode": 404
+                    "status_code": 404,
+                    "request_id": "8b2d4e7a-1c9f-4a3d-9e6b-5f8c2a7d1e4b"
                   }
                 }
               }
@@ -1164,7 +1167,8 @@
                 "example": {
                   "error": {
                     "message": "Unauthorized",
-                    "statusCode": 401
+                    "status_code": 401,
+                    "request_id": "3a6e9741-268b-41a7-b924-5fa7019e6f26"
                   }
                 }
               }
@@ -1180,7 +1184,8 @@
                 "example": {
                   "error": {
                     "message": "Not found",
-                    "statusCode": 404
+                    "status_code": 404,
+                    "request_id": "8b2d4e7a-1c9f-4a3d-9e6b-5f8c2a7d1e4b"
                   }
                 }
               }
@@ -1232,14 +1237,21 @@
         "properties": {
           "error": {
             "type": "object",
-            "required": ["message", "statusCode"],
+            "required": ["message", "status_code", "request_id"],
             "properties": {
               "message": {
-                "type": "string"
+                "type": "string",
+                "description": "Human-readable error message"
               },
-              "statusCode": {
+              "status_code": {
                 "type": "integer",
-                "format": "int32"
+                "format": "int32",
+                "description": "HTTP status code"
+              },
+              "request_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "Unique identifier for the request, useful for debugging"
               }
             }
           }
