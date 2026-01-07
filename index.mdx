@@ -3,49 +3,22 @@ title: "Welcome"
 description: "Complete API reference for integrating with HiredNow platform. Access campaign data, evaluation results, candidate insights, and analytics."
 ---
 
-## Core Capabilities
+## About Skillfully HiredNow
 
-<CardGroup cols={2}>
-  <Card
-    title="Campaign Analytics"
-    icon="bullhorn"
-    href="/api-reference/endpoint/list"
-  >
-    Retrieve and manage recruitment campaign details and performance metrics
-  </Card>
-  <Card
-    title="Evaluation Results"
-    icon="chart-line"
-    href="/api-reference/endpoint/campaigns-results"
-  >
-    Access assessment and interview results programmatically
-  </Card>
-  <Card title="Candidate Insights" icon="users" href="/overview/introduction">
-    Structured candidate profiles with engagement data and analytics
-  </Card>
-  <Card
-    title="Session Analytics"
-    icon="gauge-high"
-    href="/api-reference/endpoint/session-results"
-  >
-    Query session-level performance data and aggregate analytics
-  </Card>
-</CardGroup>
+HiredNow is Skillfully's AI-powered assessment platform. Candidates complete interactive simulations that evaluate job-relevant skills in realistic scenarios. This API provides read-only access to evaluation results, enabling you to sync candidate performance data into your ATS, data warehouse, or reporting systems.
 
-## Key Features
+**How it works**
 
-<AccordionGroup>
-  <Accordion title="Pagination Support" icon="list">
-    All list endpoints support cursor-based pagination for efficient data
-    retrieval. See [Pagination](/overview/pagination) for implementation
-    details.
-  </Accordion>
-  <Accordion title="Advanced Filtering" icon="filter">
-    Filter results by campaign status, date ranges, candidate attributes, and
-    custom criteria. Learn more about [Filtering](/overview/filtering).
-  </Accordion>
-  <Accordion title="Rate Limiting" icon="gauge">
-    API requests are rate-limited to ensure service stability. Standard rate
-    limit is 100 requests per minute per API key.
-  </Accordion>
-</AccordionGroup>
+1. Provisioned HiredNow users create a **Campaign** via the employer dashboard (not via API)
+2. Candidates receive invite links and complete simulations on the HiredNow platform
+3. You pull results via this API using the campaign ID
+
+## **Key Terms**
+
+| Term                      | Definition                                                                        |
+| :------------------------ | :-------------------------------------------------------------------------------- |
+| **Campaign**              | An initiative created in the HiredNow dashboard, linked to a specific role        |
+| **Role / Workspace**      | The assessment container assigned to candidates; contains one or more simulations |
+| **Simulation / Scenario** | A single interactive assessment task (these terms are interchangeable)            |
+| **Session-based**         | Results generated after each simulation attempt                                   |
+| **Role-based**            | Results generated after candidate submits the full workspace (or deadline passes) |
