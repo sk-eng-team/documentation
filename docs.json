@@ -39,13 +39,7 @@
       }
     ],
     "global": {
-      "anchors": [
-        {
-          "anchor": "Support",
-          "href": "mailto:hi@mintlify.com",
-          "icon": "headset"
-        }
-      ]
+      "anchors": []
     }
   },
   "api": {
@@ -58,12 +52,7 @@
     "dark": "/logo/dark.avif"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ]
+    "links": []
   },
   "contextual": {
     "options": [
