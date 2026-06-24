@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "HiredNow External API",
+    "description": "Customer-facing API for retrieving campaign evaluation results.",
     "license": {
       "name": "MIT"
     },
@@ -187,8 +187,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
                     "type": "object",
                     "properties": {
                       "id": {
@@ -314,45 +317,11 @@
                         }
                       },
                       "feedback": {
-                        "type": "object",
-                        "nullable": true,
-                        "description": "Structured feedback for this session",
-                        "properties": {
-                          "key_strengths": {
-                            "type": "array",
-                            "description": "List of key strengths identified",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "title": {
-                                  "type": "string",
-                                  "description": "Title of the strength"
-                                },
-                                "strength": {
-                                  "type": "string",
-                                  "description": "Detailed description of the strength"
-                                }
-                              }
-                            }
-                          },
-                          "areas_for_growths": {
-                            "type": "array",
-                            "description": "List of areas for improvement",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "title": {
-                                  "type": "string",
-                                  "description": "Title of the improvement area"
-                                },
-                                "improvement_area": {
-                                  "type": "string",
-                                  "description": "Detailed description of the improvement area"
-                                }
-                              }
-                            }
-                          }
-                        }
+                        "description": "Structured feedback for this session, or null.",
+                        "anyOf": [
+                          { "$ref": "#/components/schemas/Feedback" },
+                          { "type": "null" }
+                        ]
                       },
                       "additional_scores": {
                         "type": "object",
@@ -382,13 +351,27 @@
                         "description": "Timestamp when the result was last updated"
                       },
                       "order_index": {
-                        "type": "string",
+                        "type": "integer",
+                        "format": "int64",
                         "description": "Order index used for sorting"
                       }
                     }
                   }
+                    },
+                    "has_more": {
+                      "type": "boolean",
+                      "description": "Whether more results are available for pagination"
+                    },
+                    "last_record_index": {
+                      "type": "integer",
+                      "format": "int64",
+                      "nullable": true,
+                      "description": "order_index of the last record in this page, used as the next starting_after cursor"
+                    }
+                  }
                 },
-                "example": [
+                "example": {
+                  "data": [
                   {
                     "id": "f04352f1-2452-4cb7-8bad-56d6a089d56a",
                     "score": 3.2,
@@ -464,30 +447,27 @@
                       }
                     ],
                     "feedback": {
-                      "key_strengths": [
+                      "strengths": [
                         {
-                          "title": "Communication Attempt",
-                          "strength": "You made an attempt to communicate, which is a foundational step in engaging with tasks. Building on this can help improve clarity and effectiveness in future interactions."
+                          "description": "You made an attempt to communicate, which is a foundational step in engaging with tasks."
                         },
                         {
-                          "title": "Willingness to Engage",
-                          "strength": "Your initial response indicates a willingness to participate. Harnessing this willingness with more structured and relevant content can enhance your contributions."
+                          "description": "Your initial response indicates a willingness to participate."
                         }
                       ],
-                      "areas_for_growths": [
+                      "growths": [
                         {
-                          "title": "Enhancing AI Knowledge",
-                          "improvement_area": "Focus on engaging with AI-related content and discussions to build your knowledge and demonstrate understanding of AI capabilities and solutions."
-                        },
-                        {
-                          "title": "Improving Communication Clarity",
-                          "improvement_area": "Work on structuring your responses with clear, logical flow to ensure your communication is coherent and accessible to your audience."
-                        },
-                        {
-                          "title": "Developing Problem-Solving Skills",
-                          "improvement_area": "Engage more deeply with tasks to identify and address workflow challenges, showcasing your ability to solve problems effectively."
+                          "description": "Structure your responses with a clear, logical flow so your communication is easy to follow."
                         }
-                      ]
+                      ],
+                      "improvement_criteria": [
+                        {
+                          "skill": "WRITTEN_COMMUNICATION",
+                          "title": "State the point upfront",
+                          "description": "Lead with the core message, then add supporting detail, so the reader grasps your intent immediately."
+                        }
+                      ],
+                      "cross_attempts_feedback": null
                     },
                     "additional_scores": {
                       "cefr": {
@@ -496,9 +476,12 @@
                     },
                     "created_at": "2025-04-29T00:01:42.277Z",
                     "updated_at": "2025-04-29T00:01:42.277Z",
-                    "order_index": "4"
+                    "order_index": 4
                   }
-                ]
+                  ],
+                  "has_more": false,
+                  "last_record_index": 4
+                }
               }
             }
           },
@@ -714,7 +697,8 @@
                                 "description": "Timestamp when the result record was last updated"
                               },
                               "order_index": {
-                                "type": "string",
+                                "type": "integer",
+                                "format": "int64",
                                 "description": "Order index used for sorting and pagination"
                               }
                             }
@@ -725,7 +709,9 @@
                           "description": "Indicates whether there are more results available for pagination"
                         },
                         "last_record_index": {
-                          "type": "string",
+                          "type": "integer",
+                          "format": "int64",
+                          "nullable": true,
                           "description": "The order index of the last record in the current page, used for pagination"
                         }
                       }
@@ -814,7 +800,8 @@
                                 "description": "Timestamp when the result record was last updated"
                               },
                               "order_index": {
-                                "type": "string",
+                                "type": "integer",
+                                "format": "int64",
                                 "description": "Order index used for sorting and pagination"
                               },
                               "score_details": {
@@ -931,9 +918,11 @@
                                       }
                                     },
                                     "feedback": {
-                                      "type": "string",
-                                      "nullable": true,
-                                      "description": "Additional feedback for this scenario"
+                                      "description": "Structured feedback for this scenario, or null. Role submissions usually do not populate feedback.",
+                                      "anyOf": [
+                                        { "$ref": "#/components/schemas/Feedback" },
+                                        { "type": "null" }
+                                      ]
                                     },
                                     "created_at": {
                                       "type": "string",
@@ -954,7 +943,9 @@
                           "description": "Indicates whether there are more results available for pagination"
                         },
                         "last_record_index": {
-                          "type": "string",
+                          "type": "integer",
+                          "format": "int64",
+                          "nullable": true,
                           "description": "The order index of the last record in the current page, used for pagination"
                         }
                       }
@@ -985,7 +976,7 @@
                           },
                           "created_at": "2025-05-29T00:01:42.277Z",
                           "updated_at": "2025-04-29T00:01:42.277Z",
-                          "order_index": "71747"
+                          "order_index": 71747
                         },
                         {
                           "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
@@ -1002,7 +993,7 @@
                           "additional_scores": {},
                           "created_at": "2025-05-28T14:30:15.123Z",
                           "updated_at": "2025-05-28T16:45:30.456Z",
-                          "order_index": "71686"
+                          "order_index": 71686
                         },
                         {
                           "id": "d4e9f2a1-7b3c-4d8e-a5f6-1c2d3e4f5a6b",
@@ -1023,11 +1014,11 @@
                           },
                           "created_at": "2025-10-30T13:37:43.175Z",
                           "updated_at": "2025-10-30T13:37:43.175Z",
-                          "order_index": "71680"
+                          "order_index": 71680
                         }
                       ],
                       "has_more": true,
-                      "last_record_index": "71680"
+                      "last_record_index": 71680
                     }
                   },
                   "DETAILED": {
@@ -1048,7 +1039,7 @@
                           "overall_score": 3.37,
                           "created_at": "2025-05-29T00:01:42.277Z",
                           "updated_at": "2025-04-29T00:01:42.277Z",
-                          "order_index": "29462",
+                          "order_index": 29462,
                           "additional_scores": {
                             "cefr": {
                               "score": "C1"
@@ -1105,7 +1096,7 @@
                           "overall_score": 4.1,
                           "created_at": "2025-05-28T10:15:30.789Z",
                           "updated_at": "2025-05-28T12:20:45.012Z",
-                          "order_index": "29464",
+                          "order_index": 29464,
                           "additional_scores": {
                             "cefr": {
                               "score": "C1"
@@ -1150,7 +1141,7 @@
                         }
                       ],
                       "has_more": false,
-                      "last_record_index": "29464"
+                      "last_record_index": 29464
                     }
                   }
                 }
@@ -1197,7 +1188,72 @@
   },
   "components": {
     "schemas": {
+      "Feedback": {
+        "type": "object",
+        "description": "Structured, customer-facing feedback for an evaluation.",
+        "properties": {
+          "strengths": {
+            "type": "array",
+            "description": "Things the candidate did well.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Description of the strength"
+                }
+              }
+            }
+          },
+          "growths": {
+            "type": "array",
+            "description": "Areas where the candidate can improve.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Description of the growth area"
+                }
+              }
+            }
+          },
+          "improvement_criteria": {
+            "type": "array",
+            "description": "Actionable, skill-tagged improvement guidance.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "skill": {
+                  "type": "string",
+                  "description": "Skill key the criterion relates to"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Short title for the improvement criterion"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Detailed improvement guidance"
+                }
+              }
+            }
+          },
+          "cross_attempts_feedback": {
+            "type": "object",
+            "nullable": true,
+            "description": "Feedback synthesized across multiple attempts, or null when not applicable.",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Cross-attempt feedback text"
+              }
+            }
+          }
+        }
+      },
       "Campaign": {
+        "description": "Deprecated/unused - not referenced by any endpoint. The real campaign shape is defined inline on GET /v1/campaigns.",
         "required": [
           "campaign_id",
           "campaign_name",
